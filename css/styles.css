@@ -1,14 +1,36 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&family=Roboto:wght@100&display=swap');
 
 body {
     font-family: 'Patrick Hand SC', cursive;
-    font-size: 32px;
+    font-size: 2rem;
     background-color: #c2b280;
+}
+nav {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    color: antiquewhite;
+    padding: 10px 0;
+    background-color: #a5a39d;
+    border-bottom: 1px solid antiquewhite;
+}
+nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 20px;;
+}
+nav ul li {
+    margin: 0 10px;
 }
 .content {
     display: flex;
     flex-direction: row;
+}
+nav ul li a:hover {
+    background-color: rgba(47, 53, 59, 0.2);
+    border-radius: 5px;
+    transition: background-color 0.6s;
+    cursor: pointer;
 }
 main {
     width: 60%;
@@ -38,4 +60,19 @@ form {
     padding: 10px;
     border: 0;
     cursor: pointer;
+}
+input::-webkit-input-placeholder {
+    color: #4b4a47;
+}
+input::-moz-placeholder {
+    color: #4b4a47;
+}
+input:-ms-input-placeholder {
+    color: #4b4a47;
+}
+input::-ms-input-placeholder {
+    color: #4b4a47;
+}
+input::placeholder {
+    color: #4b4a47;
 }
