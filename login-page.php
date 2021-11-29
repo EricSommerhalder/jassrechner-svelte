@@ -13,9 +13,11 @@
       <main>
         <h2>Grüezi bim Jassrächner</h2>
         <p>Bitte amälde!</p>
-        <input class="inputbox" type="text" placeholder="Benutzer">
-        <input class="inputbox"type="password" placeholder="Passwort">
-        <input class="submitbtn" type="submit" value="LOGIN">
+        <form action="php/login.php" method="post">
+          <input class="inputbox" type="text" placeholder="Benutzer" name="benutzer" required>
+          <input class="inputbox"type="password" placeholder="Passwort" name="passwort" required>
+          <input class="submitbtn" type="submit" value="LOGIN">
+        </form>
       </main>
       <aside class="rightside"></aside>
     </div>
