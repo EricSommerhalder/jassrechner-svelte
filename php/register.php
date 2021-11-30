@@ -1,16 +1,7 @@
 <?php
-  DEFINE('DB_USERNAME', 'root');
-  DEFINE('DB_PASSWORD', 'root');
-  DEFINE('DB_HOST', 'localhost');
-  DEFINE('DB_DATABASE', 'jass');
-  DEFINE('DB_PORT', 8888);
-  DEFINE('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
-
-  $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_PORT, DB_SOCKET);
-
-   if (mysqli_connect_error()) {
-    die('Verbindigsfähler ('.mysqli_connect_errno().') '.mysqli_connect_error());
-  }
+  require('util.php');
+   
+  $mysqli = setup();
 
   if (!isset($_POST['name'], $_POST['passwort'], $_POST['email'], $_POST['confirm'])) {
     // Could not get the data that should have been sent.
@@ -26,6 +17,9 @@
   if (strlen($_POST['passwort']) > 20 || strlen($_POST['passwort']) < 5) {
     exit('S Passwort miessti denn zwüsche 5 und 19 Zeiche lang si jä?');
   }
+  if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['name']) == 0) {
+    exit('Ungültigi Zeiche im Benutzername vewändet!');
+}
 
   if ($_POST['passwort'] != $_POST['confirm']){
     exit('Passwörter sind nid gliich!');
@@ -34,45 +28,28 @@
   $email = $_POST['email'];
   $passwort = password_hash($_POST['passwort'], PASSWORD_DEFAULT);
   
-  if ($stmt = $mysqli->prepare('SELECT id, passwort FROM Benutzer WHERE name = ?')) {
-    // Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
-    $stmt->bind_param('s', $name);
-    $stmt->execute();
-    $stmt->store_result();
+  $stmt = getUserByName($name); 
     // Store the result so we can check if the account exists in the database.
     if ($stmt->num_rows > 0) {
       // Username already exists
       echo 'Name existiert scho!';
     } else {
-      if ($stmt2 = $mysqli->prepare('SELECT id, passwort FROM Benutzer WHERE email = ?')) {
-        // Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
-        $stmt2->bind_param('s', $email);
-        $stmt2->execute();
-        $stmt2->store_result();
-        // Store the result so we can check if the account exists in the database.
-        if ($stmt2->num_rows > 0) {
+      $stmt2 = getUserByEmail($email);
+      if ($stmt2->num_rows > 0) {
           // Username already exists
-          echo 'Email existiert scho!';
+        echo 'Email existiert scho!';
+      } else {
+        // Insert new account
+        $sql = "INSERT INTO Benutzer (name, email, passwort) VALUES ('$name', '$email', '$passwort')";
+        if ($mysqli->query($sql) === TRUE) {
+          echo "Het tiptop funktioniert";
         } else {
-          // Insert new account
-          $sql = "INSERT INTO Benutzer (name, email, passwort) VALUES ('$name', '$email', '$passwort')";
-          if ($mysqli->query($sql) === TRUE) {
-            echo "Het tiptop funktioniert";
-          } else {
-            echo "Fähler: " . $sql . "<br>" . $mysqli->error;
-          }
+          echo "Fähler: " . $sql . "<br>" . $mysqli->error;
         }
         $stmt2->close();
-      } else {
-        // Something is wrong with the sql statement, check to make sure accounts table exists with all 3 fields.
-        echo 'Öppis het nid funktioniert, bitte nomol probiere';
-      }
     }
     $stmt->close();
-  } else {
-    // Something is wrong with the sql statement, check to make sure accounts table exists with all 3 fields.
-    echo 'Öppis het nid funktioniert, bitte nomol probiere';
-  }
+  } 
   
   $mysqli->close();
 ?>
