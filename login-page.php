@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jassrechner</title>
+    <title>Jassrechner | Login</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css ">
   </head>
@@ -16,7 +16,7 @@
         <form action="php/login.php" method="post">
           <input class="inputbox" type="text" placeholder="Benutzer" name="benutzer" required>
           <input class="inputbox"type="password" placeholder="Passwort" name="passwort" required>
-          <input class="submitbtn" type="submit" value="LOGIN">
+          <button class="submitbtn" type="submit">AMÄLDE</button>
         </form>
       </main>
       <aside class="rightside"></aside>

@@ -17,8 +17,8 @@
           <input class="inputbox" type="text" placeholder="Username" name="name" required>
           <input class="inputbox" type="email" placeholder="Email" name="email" required>       
           <input class="inputbox"type="password" placeholder="Passwort" name="passwort" required>
-          <input class="inputbox"type="password" placeholder="Passwort wiederholen" name="confirm" required>
-          <input class="submitbtn" type="submit" value="REGISTRIEREN">
+          <input class="inputbox"type="password" placeholder="Passwort wiederhole" name="confirm" required>
+          <button class="submitbtn" type="submit">REGISTRIERE</button>
         </form>
       </main>
       <aside class="rightside"></aside>
