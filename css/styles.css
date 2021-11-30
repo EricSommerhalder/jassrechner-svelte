@@ -72,14 +72,13 @@ table {
     width: 100%;
     height: calc(100vh - 100px);
     text-align: center;
-    vertical-align: center;
 }
 tr {
     border-bottom: 2px solid antiquewhite;
 }
 td {
-
     border-right: 2px solid antiquewhite;
+    vertical-align: middle;
 }
 tr:nth-child(11){
     border-bottom: 4px solid antiquewhite;
