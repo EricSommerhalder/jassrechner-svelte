@@ -113,8 +113,7 @@ if ($group == NULL){
         </div>
       </main>
       <aside class="rightside">
-        <p>Uusgäh dörf: <?php echo $_SESSION['players'][$_SESSION['ausgeber']] ?></p>
-        <p> <?php foreach($_SESSION['tafel'] as &$a) { echo $a;} ?> </p>
+        <p id="ausgeberFeld">Uusgäh dörf: <?php echo $_SESSION['players'][$_SESSION['ausgeber']] ?></p>
       </aside>
     </div>
     <footer>

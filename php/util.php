@@ -297,4 +297,15 @@ function setTafel(){
         }
         $mysqli->close();
 }
+function setAusgeber(){
+    $ausgeber = $_SESSION['ausgeber'];
+    $activeGame = $_SESSION['activeGame'];
+    $mysqli = setup();
+    $sql = "UPDATE Spiele SET ausgeber='$ausgeber' WHERE id=$activeGame";
+    if ($mysqli->query($sql) === TRUE) {
+    } else {
+        echo "Nid könne update " . $mysqli->error;
+    }
+    $mysqli->close();
+}
 ?>
