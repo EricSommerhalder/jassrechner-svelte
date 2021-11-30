@@ -28,6 +28,7 @@
         $playerId = $_SESSION['id'];
         addPlayerToGroup($playerId, $groupId);
         setActiveGroup($playerId, $groupId);
+        $_SESSION['activeGroup'] = $groupId;
         if (isset($_POST['player'])){
             $arr = explode(';', $_POST['player']);
             foreach ($arr as &$value){
@@ -88,19 +89,28 @@
         }
         addGameToGroup($gameId, $groupId);
         setActiveGame($groupId, $gameId);
-
-        $sql = "INSERT INTO Teams (name) VALUES ('$defaultTeamA')";
+        $spielerA;
+        $spielerB;
+        if ($noPlayers == 4){
+            $spielerA = "Spieler A" . '1;' . $defaultPlayerA .'2';
+            $spielerB = $defaultPlayerB . '1;' . $defaultPlayerB .'2';
+        } else if ($noPlayers == 6){
+            $spielerA = $defaultPlayerA . '1;' . $defaultPlayerA .'2;' . $defaultPlayerA .'3';
+            $spielerB = $defaultPlayerB . '1;' . $defaultPlayerB .'2;' . $defaultPlayerB .'3';
+        }
+        $sql = "INSERT INTO Teams (name, spieler) VALUES ('$defaultTeamA', '$spielerA')";
         if ($mysqli->query($sql) === FALSE) {
             exit( "Fähler bim Team erstelle! " . $sql . "<br>" . $mysqli->error);
         }
         $teamA = mysqli_insert_id($mysqli);
-        $sql = "INSERT INTO Teams (name) VALUES ('$defaultTeamB')";
+        $sql = "INSERT INTO Teams (name, spieler) VALUES ('$defaultTeamB', '$spielerB')";
         if ($mysqli->query($sql) === FALSE) {
             exit( "Fähler bim Team erstelle! " . $sql . "<br>" . $mysqli->error);
         }
         $teamB = mysqli_insert_id($mysqli);
         addTeamToGroup($teamA, $groupId);
         addTeamToGroup($teamB, $groupId);
+        header('Location: ../tafel-page.php');
     } else {
         echo "Fähler: " . $sql . "<br>" . $mysqli->error;
     }
