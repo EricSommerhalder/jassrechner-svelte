@@ -265,4 +265,36 @@ function getTeamName($id){
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
 }
+function getTafel(){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT tafel FROM Spiele WHERE id = ?')) {
+        $stmt->bind_param('s', $_SESSION['activeGame']);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($tafel);
+            $stmt->fetch();
+            $arr = explode(' ', $tafel);
+            $intarr = [];
+            foreach($arr as $a){
+                array_push($intarr, (int) $a);
+            }
+            $_SESSION['tafel'] = $intarr;
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+}
+function setTafel(){
+        $tafel = implode(" ", $_SESSION['tafel']);
+        $activeGame = $_SESSION['activeGame'];
+        $mysqli = setup();
+        $sql = "UPDATE Spiele SET tafel='$tafel' WHERE id=$activeGame";
+        if ($mysqli->query($sql) === TRUE) {
+        } else {
+            echo "Nid könne update " . $mysqli->error;
+        }
+        $mysqli->close();
+}
 ?>
