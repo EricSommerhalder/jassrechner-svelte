@@ -114,6 +114,18 @@ if ($group == NULL){
       </main>
       <aside class="rightside">
         <p id="ausgeberFeld">Uusgäh dörf: <?php echo $_SESSION['players'][$_SESSION['ausgeber']] ?></p>
+        >
+        <div class="infobox_turnier">
+          <table>
+
+          </table>
+        </div>
+        <div class="infobox_cashgame">
+          <table>
+            
+          </table>
+        </div>
+        <p> <?php foreach($_SESSION['tafel'] as &$a) { echo $a;} ?> </p>
       </aside>
     </div>
     <footer>

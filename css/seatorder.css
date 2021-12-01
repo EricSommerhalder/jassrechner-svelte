@@ -1,0 +1,48 @@
+.seatorder_6 {
+    position: relative;
+    width: 80%;
+    height: 200px;
+    margin: 0 auto 20px;
+    border-radius: 125px;
+    background: #2f353b;
+  }
+  .seatorder_4 {
+    position: relative;
+    width: 60%;
+    height: 200px;
+    margin: 0 auto 20px;
+    border-radius: 125px;
+    background: #2f353b;
+  }
+  .seatorder_6 input, .seatorder_4 input {
+    background: #a5a39d;
+    border: 1px solid #faebd7;
+    width: 140px;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+  }
+  .player_a1 {
+    bottom: 10px;
+    left: 20px;
+  }
+  .player_b1 {
+    bottom: 10px;
+    left: calc(50% - 70px);
+  }
+  .player_a2, .player_b1_4 {
+    bottom: 10px;
+    right: 20px;
+  }
+  .player_b2, .player_a2_4 {
+    top: 10px;
+    right: 20px;
+  }
+  .player_a3 {
+    top: 10px;
+    left: calc(50% - 70px);
+  }
+  .player_b3, .player_b2_4 {
+    top: 10px;
+    left: 20px;
+  }
