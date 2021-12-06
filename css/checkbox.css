@@ -1,40 +1,48 @@
 .groupsection {
     text-align: left;
-  }
-  
-  .neueGruppe {
+}
+
+.neueGruppe {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     max-width: 300px;
     margin: 0 auto;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
     flex-direction: row;
+    -ms-flex-pack: distribute;
     justify-content: space-around;
-  }
-  /* Customize the label (the container) */
-  .spielerZahl, .selectGroup {
+}
+
+/* Customize the label (the container) */
+.selectionBtn {
     display: inline;
     position: relative;
     padding-left: 35px;
     text-align: left;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  }
-  
-  /* Hide the browser's default radio button */
-  .spielerZahl input,
-  .selectGroup input {
+}
+
+/* Hide the browser's default radio button */
+.selectionBtn input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
     height: 0;
     width: 0;
-  }
-  
-  /* Create a custom radio button */
-  .checkmark {
+}
+
+/* Create a custom radio button */
+.checkmark {
     position: absolute;
     top: calc(50% - 10px);
     left: 0;
@@ -42,53 +50,52 @@
     width: 20px;
     background-color: antiquewhite;
     border-radius: 25%;
-  }
-  
-  /* On mouse-over, add a background color */
-  .spielerZahl:hover input ~ .checkmark,
-  .selectGroup:hover input ~ .checkmark {
-    background-color: #d8ece7;
-    border: 1px solid #80c2b2;
-    box-shadow: 0 0 10px #80c2b2;
-  }
-  
-  /* When the radio button is checked, add a light-green background */
-  .spielerZahl input:checked ~ .checkmark,
-  .selectGroup input:checked ~ .checkmark {
-    background-color: #80c2b2;
+}
+
+/* On mouse-over, add a background color */
+.selectionBtn:hover input ~ .checkmark {
+    background-color: #d4d3d0;
+    border: 1px solid #a5a39d;
+    -webkit-box-shadow: 0 0 10px #a5a39d;
+    box-shadow: 0 0 10px #a5a39d;
+}
+
+/* When the radio button is checked, add a light-green background */
+.selectionBtn input:checked ~ .checkmark {
+    background-color: #a5a39d;
+    -webkit-transition: 200ms;
+    -o-transition: 200ms;
     transition: 200ms;
-  }
-  
-  /* Create the indicator (the dot/circle - hidden when not checked) */
-  .checkmark:after {
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
     content: "";
     position: absolute;
     display: none;
-  }
-  
-  /* Show the indicator (dot/circle) when checked */
-  .spielerZahl input:checked ~ .checkmark:after,
-  .selectGroup input:checked ~ .checkmark:after {
+}
+
+/* Show the indicator (dot/circle) when checked */
+.selectionBtn input:checked ~ .checkmark:after {
     display: block;
-  }
-  
-  /* Style the indicator (dot/circle) */
-  .spielerZahl .checkmark:after,
-  .selectGroup .checkmark:after {
+}
+
+/* Style the indicator (dot/circle) */
+.selectionBtn .checkmark:after {
     top: 6px;
     left: 6px;
     width: 8px;
     height: 8px;
     border-radius: 25%;
     background: antiquewhite;
-  }
-  
-  button.deleteGroup{
+}
+
+button.deleteGroup {
     margin: 0;
     background-color: #c28090;
-  }
-  
-  a.deleteGroup {
+}
+
+a.deleteGroup {
     display: block;
     line-height: 0;
     margin-bottom: 15px;
@@ -97,7 +104,8 @@
     color: #c28090;
     text-decoration: underline;
     cursor: pointer;
-  }
-  a.deleteGroup:hover {
-      color: antiquewhite;
-  }
+}
+
+a.deleteGroup:hover {
+    color: antiquewhite;
+}

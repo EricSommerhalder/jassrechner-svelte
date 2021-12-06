@@ -1,5 +1,5 @@
 <?php
-$defaultTurniersieg = 20;
+$defaultTurniersieg = 21;
 $defaultMatsch = 1;
 $defaultKontermatsch = 2;
 $defaultSieg = 1;
@@ -10,13 +10,13 @@ $defaultPlayerA = 'Spieler A';
 $defaultPlayerB = 'Spieler B';
 function setup(){
     DEFINE('DB_USERNAME', 'root');
-    DEFINE('DB_PASSWORD', 'root');
+    DEFINE('DB_PASSWORD', '');
     DEFINE('DB_HOST', 'localhost');
     DEFINE('DB_DATABASE', 'jass');
     DEFINE('DB_PORT', 8888);
-    DEFINE('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
+    //DEFINE('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
 
-    $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_PORT, DB_SOCKET);
+    $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
     if (mysqli_connect_error()) {
         die('Verbindigsfähler ('.mysqli_connect_errno().') '.mysqli_connect_error());

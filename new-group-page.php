@@ -9,6 +9,7 @@ if (!isset($_SESSION['id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,46 +17,85 @@ if (!isset($_SESSION['id'])) {
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css ">
     <link rel="stylesheet" href="css/seatorder.css">
-  </head>
+    <link rel="stylesheet" href="css/checkbox.css">
     <script type="text/javascript">
-        function formatCheck(){
-            if (document.getElementById('turnier').checked){
+        function formatCheck() {
+            if (document.getElementById('turnier').checked) {
                 document.getElementById('turnierInfo').style.display = 'block';
             } else {
                 document.getElementById('turnierInfo').style.display = 'none';
             }
-            if (document.getElementById('geld').checked){
+            if (document.getElementById('geld').checked) {
                 document.getElementById('geldInfo').style.display = 'block';
             } else {
                 document.getElementById('geldInfo').style.display = 'none';
             }
         }
+
     </script>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="tafel-page.php">Tafel</a></li>
+            <li>|</li>
+            <li><a href="results-page.php">Resultate</a></li>
+            <li>|</li>
+            <li><a href="group-page.php">Gruppe</a></li>
+            <li>|</li>
+            <li><a href="settings-page.php">Einstellungen</a></li>
+            <li>|</li>
+            <li><a>Abmelden</a></li>
+        </ul>
+        <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
+        <p class="crumb">Aktivi Gruppe: xyz</p>
+    </nav>
+    <!--<div class="groupsection">
+          <label class="selectGroup">Gruppe X
+            <input type="radio" name="gruppenwahl">
+            <span class="checkmark"></span>
+          </label>
+          <a class="deleteGroup">Diese Gruppe löschen</a>
+        </div>-->
     <form action="php/createGroup.php" method="post">
-        <input placeholder="Gruppename" name="groupname"/>
+        <input placeholder="Gruppename" name="groupname">
         <p>Wieviel jasse mit?</p>
-        <input type="radio" id="four" name="noPlayers" value="4">
-        <label for="four">4 Spieler</label><br>
-        <input type="radio" id="six" name="noPlayers" value="6">
-        <label for="six">6 Spieler</label><br>
+        <div>
+            <label class="selectionBtn" for="four">4 Spieler
+                <input type="radio" id="four" name="noPlayers" value="4">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div>
+            <label class="selectionBtn" for="six">6 Spieler
+                <input type="radio" id="six" name="noPlayers" value="6">
+                <span class="checkmark"></span>
+            </label>
+        </div>
         <p>Weles Format jassedr?</p>
-        <input type="radio" onclick="javascript:formatCheck();" id="turnier" name="format" value="turnier">
-        <label for="turnier">Turnier</label><br>
-        <input type="radio" onclick="javascript:formatCheck();" id="geld" name="format" value="geld">
-        <label for="geld">Um Gäld</label><br>
+        <label class="selectionBtn" for="turnier">Turnier
+            <input type="radio" onclick="javascript:formatCheck();" id="turnier" name="format" value="turnier">
+            <span class="checkmark"></span>
+        </label>
+        <label class="selectionBtn" for="geld">Um Gäld
+            <input type="radio" onclick="javascript:formatCheck();" id="geld" name="format" value="geld">
+            <span class="checkmark"></span>
+        </label>
         <div id="turnierInfo" style="display:none">
-            <input placeholder="Wieviel Pünggt bruuchts zum gwünne?" name="gewonnenBei"/>
-            <input placeholder="Wieviel Pünggt gits pro Match?" name="punkteProMatch"/>
-            <input placeholder="Wieviel Pünggt gits pro Gegematch?" name="punkteProGegenmatch"/>
-            <input placeholder="Wieviel Pünggt gits füre Sieg" name="punkteProSieg"/>
+            <input placeholder="Wieviel Pünggt bruuchts zum gwünne?" name="gewonnenBei" />
+            <input placeholder="Wieviel Pünggt gits pro Match?" name="punkteProMatch" />
+            <input placeholder="Wieviel Pünggt gits pro Gegematch?" name="punkteProGegenmatch" />
+            <input placeholder="Wieviel Pünggt gits füre Sieg" name="punkteProSieg" />
         </div>
         <div id="geldInfo" style="display:none">
-            <input placeholder="Gäld pro Punggt" name="geldProPunkt"/>
+            <input placeholder="Gäld pro Punggt" name="geldProPunkt" />
         </div>
         <p>Spieler hinzuefiege. Mehreri durch ; trenne</p>
-        <input placeholder="Spieler" name="player"/> 
-        <input class="submitbtn" type="submit" value="Gruppe erstelle">
-</form>
-    
+        <input placeholder="Spieler" name="player" />
+        <button type="submit">Gruppe erstelle</button>
+    </form>
+
+</body>
 
 </html>
