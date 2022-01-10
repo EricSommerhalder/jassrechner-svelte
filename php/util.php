@@ -13,7 +13,7 @@ function setup(){
     DEFINE('DB_PASSWORD', '');
     DEFINE('DB_HOST', 'localhost');
     DEFINE('DB_DATABASE', 'jass');
-    DEFINE('DB_PORT', 8888);
+    //DEFINE('DB_PORT', 8888);
     //DEFINE('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
 
     $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);

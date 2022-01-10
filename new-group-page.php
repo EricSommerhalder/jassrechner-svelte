@@ -73,15 +73,17 @@ if (!isset($_SESSION['id'])) {
                 <span class="checkmark"></span>
             </label>
         </div>
-        <p>Weles Format jassedr?</p>
-        <label class="selectionBtn" for="turnier">Turnier
-            <input type="radio" onclick="javascript:formatCheck();" id="turnier" name="format" value="turnier">
-            <span class="checkmark"></span>
-        </label>
-        <label class="selectionBtn" for="geld">Um Gäld
-            <input type="radio" onclick="javascript:formatCheck();" id="geld" name="format" value="geld">
-            <span class="checkmark"></span>
-        </label>
+        <div>
+            <p>Weles Format jassedr?</p>
+            <label class="selectionBtn" for="turnier">Turnier
+                <input type="radio" onclick="javascript:formatCheck();" id="turnier" name="format" value="turnier">
+                <span class="checkmark"></span>
+            </label>
+            <label class="selectionBtn" for="geld">Um Gäld
+                <input type="radio" onclick="javascript:formatCheck();" id="geld" name="format" value="geld">
+                <span class="checkmark"></span>
+            </label>
+        </div>
         <div id="turnierInfo" style="display:none">
             <input placeholder="Wieviel Pünggt bruuchts zum gwünne?" name="gewonnenBei" />
             <input placeholder="Wieviel Pünggt gits pro Match?" name="punkteProMatch" />
