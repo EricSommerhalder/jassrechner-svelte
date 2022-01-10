@@ -1,0 +1,41 @@
+<?php
+// We need to use sessions, so you should always start sessions using the below code.
+session_start();
+// If the user is not logged in redirect to the login page...
+if (!isset($_SESSION['id'])) {
+	header('Location: login-page.php');
+	exit;
+}   
+?>
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jassrechner | Group</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css ">
+    <link rel="stylesheet" href="css/seatorder.css">
+    <link rel="stylesheet" href="css/checkbox.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="tafel-page.php">Tafel</a></li>
+            <li>|</li>
+            <li><a href="results-page.php">Resultate</a></li>
+            <li>|</li>
+            <li><a href="group-page.php">Gruppe</a></li>
+            <li>|</li>
+            <li><a href="user-page.php">Benutzer</a></li>
+            <li>|</li>
+            <li><a>Abmelden</a></li>
+        </ul>
+        <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
+        <p class="crumb">Aktivi Gruppe: xyz</p>
+    </nav>
+</body>
+
+</html>

@@ -44,7 +44,7 @@ if (!isset($_SESSION['id'])) {
             <li>|</li>
             <li><a href="group-page.php">Gruppe</a></li>
             <li>|</li>
-            <li><a href="settings-page.php">Einstellungen</a></li>
+            <li><a href="user-page.php">Benutzer</a></li>
             <li>|</li>
             <li><a>Abmelden</a></li>
         </ul>
