@@ -10,38 +10,38 @@ if (!isset($_SESSION['id'])) {
 
 $group = getActiveGroup($_SESSION['id']);
 if ($group == NULL){
-  header('Location: group-page.php');
+  header('Location: group-page1.php');
   exit;
 } 
 
   $game = getActiveGame($_SESSION['activeGroup']);
   if ($game == NULL){
-    header('Location: group-page.php');
+    header('Location: group-page2.php');
     exit;
   }
   getAusgeber();
   if (!isset($_SESSION['ausgeber']) || $_SESSION['ausgeber'] == NULL){
-    header('Location: group-page.php');
+    header('Location: group-page3.php');
     exit;
   }
   getNoPlayers();
   if (!isset($_SESSION['noPlayers']) || $_SESSION['noPlayers'] == NULL){
-    header('Location: group-page.php');
+    header('Location: group-page4.php');
     exit;
   }
   getPlayerNames();
   if (!isset($_SESSION['players']) || $_SESSION['players'] == NULL){
-    header('Location: group-page.php');
+    header('Location: group-page5.php');
     exit;
   }
   getTeamNames();
   if (!isset($_SESSION['teamnames']) || $_SESSION['teamnames'] == NULL){
-    header('Location: group-page.php');
+    header('Location: group-page6.php');
     exit;
   }
   getTafel();
   if (!isset($_SESSION['tafel']) || $_SESSION['tafel'] == NULL){
-    header('Location: group-page.php');
+    header('Location: group-page7.php');
     exit;
   }
 
