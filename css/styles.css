@@ -203,6 +203,15 @@ td {
     vertical-align: middle;
 }
 
+td>input {
+    background-color: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+
 tr:nth-child(11) {
     border-bottom: 4px solid antiquewhite;
 }
