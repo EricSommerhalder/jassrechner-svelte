@@ -9,6 +9,7 @@ $defaultTeamB = 'Team B';
 $defaultPlayerA = 'Spieler A';
 $defaultPlayerB = 'Spieler B';
 DEFINE('DB_USERNAME', 'root');
+<<<<<<< HEAD
     DEFINE('DB_PASSWORD', 'root');
     DEFINE('DB_HOST', 'localhost');
     DEFINE('DB_DATABASE', 'jass');
@@ -16,7 +17,16 @@ DEFINE('DB_USERNAME', 'root');
     DEFINE('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
 function setup(){
     
+=======
+DEFINE('DB_PASSWORD', '');
+DEFINE('DB_HOST', 'localhost');
+DEFINE('DB_DATABASE', 'jass');
+//DEFINE('DB_PORT', 8888);
+//DEFINE('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
+>>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
 
+function setup(){
+    
     $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
     if (mysqli_connect_error()) {

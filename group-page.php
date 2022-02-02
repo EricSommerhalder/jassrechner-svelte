@@ -29,11 +29,19 @@ if (!isset($_SESSION['id'])) {
             <li>|</li>
             <li><a href="group-page.php">Gruppe</a></li>
             <li>|</li>
+<<<<<<< HEAD
             <li><a href="settings-page.php">Einstellungen</a></li>
             <li>|</li>
             <li><a>Abmelden</a></li>
         </ul>
         <p class="crumb">Member, Du bisch igloggt</p>
+=======
+            <li><a href="user-page.php">Benutzer</a></li>
+            <li>|</li>
+            <li><a>Abmelden</a></li>
+        </ul>
+        <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
+>>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
         <p class="crumb">Aktivi Gruppe: xyz</p>
     </nav>
     <div class="content">
@@ -43,7 +51,10 @@ if (!isset($_SESSION['id'])) {
                 <li>Gruppe 2</li>
                 <li>Gruppe 3</li>
             </ul>
+<<<<<<< HEAD
             <div id="result"><?php require("php/prepareGroups.php"); echo prep(); ?></div>
+=======
+>>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
 
             <div class="groupsection">
                 <label class="selectionBtn">Gruppe X
@@ -101,10 +112,19 @@ if (!isset($_SESSION['id'])) {
                 <li>Betrag pro 100 Pünggt pro Spieler: 0.5 Fr</li>
                 <li>Minimumbetrag pro Spieler: vv Fr</li>
             </ul>
+<<<<<<< HEAD
+=======
+            <button type="reset">Istellige ändere</button>
+            <button type="submit">Neui Istellige bestätige</button>
+>>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
         </aside>
     </div>
     <footer>
     </footer>
 
 </body>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
 </html>
