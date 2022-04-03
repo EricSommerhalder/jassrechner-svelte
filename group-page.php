@@ -2,10 +2,14 @@
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
 // If the user is not logged in redirect to the login page...
+require('php/util.php');
 if (!isset($_SESSION['id'])) {
 	header('Location: login-page.php');
 	exit;
-}   
+}
+if (!isset($_SESSION['activeGroup'])) {
+    getActiveGroup($_SESSION['id']);
+}  
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -29,20 +33,14 @@ if (!isset($_SESSION['id'])) {
             <li>|</li>
             <li><a href="group-page.php">Gruppe</a></li>
             <li>|</li>
-<<<<<<< HEAD
             <li><a href="settings-page.php">Einstellungen</a></li>
             <li>|</li>
-            <li><a>Abmelden</a></li>
-        </ul>
-        <p class="crumb">Member, Du bisch igloggt</p>
-=======
             <li><a href="user-page.php">Benutzer</a></li>
             <li>|</li>
             <li><a href="php/logout.php">Abmelden</a></li>
         </ul>
         <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
->>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
-        <p class="crumb">Aktivi Gruppe: xyz</p>
+        <p class="crumb">Aktivi Gruppe: <?php ini_set('display_errors', 1); ini_set('display_startup_errors', 1); error_reporting(E_ALL); echo getGroupName($_SESSION['activeGroup'])?></p>
     </nav>
     <div class="content">
         <aside class="leftside">
@@ -51,11 +49,7 @@ if (!isset($_SESSION['id'])) {
                 <li>Gruppe 2</li>
                 <li>Gruppe 3</li>
             </ul>
-<<<<<<< HEAD
             <div id="result"><?php require("php/prepareGroups.php"); echo prep(); ?></div>
-=======
->>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
-
             <div class="groupsection">
                 <label class="selectionBtn">Gruppe X
                     <input type="radio" name="gruppenwahl">
@@ -112,19 +106,12 @@ if (!isset($_SESSION['id'])) {
                 <li>Betrag pro 100 Pünggt pro Spieler: 0.5 Fr</li>
                 <li>Minimumbetrag pro Spieler: vv Fr</li>
             </ul>
-<<<<<<< HEAD
-=======
             <button type="reset">Istellige ändere</button>
             <button type="submit">Neui Istellige bestätige</button>
->>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
         </aside>
     </div>
     <footer>
     </footer>
 
 </body>
-<<<<<<< HEAD
-=======
-
->>>>>>> 384e291d96e439ba612b9f0a53a7ede2a2b4da3f
 </html>
