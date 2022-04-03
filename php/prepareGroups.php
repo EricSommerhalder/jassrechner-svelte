@@ -1,7 +1,7 @@
 <?php
 session_start();
-require('util.php');
 function prep(){
+    require_once('util.php');
     $res = getGroups();
     $s = "";
     foreach ($res as &$val){
