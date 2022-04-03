@@ -1,4 +1,5 @@
 <?php
+require ('config.php');
 $defaultTurniersieg = 21;
 $defaultMatsch = 1;
 $defaultKontermatsch = 2;
@@ -8,22 +9,7 @@ $defaultTeamA = 'Team A';
 $defaultTeamB = 'Team B';
 $defaultPlayerA = 'Spieler A';
 $defaultPlayerB = 'Spieler B';
-DEFINE('DB_USERNAME', 'root');
-DEFINE('DB_PASSWORD', '');
-DEFINE('DB_HOST', 'localhost');
-DEFINE('DB_DATABASE', 'jass');
-//DEFINE('DB_PORT', 8888);
-//DEFINE('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock');
 
-function setup(){
-    
-    $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-
-    if (mysqli_connect_error()) {
-        die('Verbindigsfähler ('.mysqli_connect_errno().') '.mysqli_connect_error());
-    }
-    return $mysqli;
-}
 function getGroupByName($name){
     $mysqli = setup();
     if ($stmt = $mysqli->prepare('SELECT id, istTurnier, anzahlSpieler, aktivesSpiel FROM Gruppen WHERE name = ?')) {
@@ -197,6 +183,26 @@ function getNoPlayers(){
     else {
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
+}
+function getGroups(){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT (gruppenId) FROM `Gruppen_Benutzer` WHERE benutzerId = ? ORDER by gruppenId ASC')) {
+        $stmt->bind_param('s', $_SESSION['id']);   
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($temp);
+            $gruppenIds = [];
+            for ($i = 0; $i < $stmt->num_rows; $i++){
+                $stmt->fetch();
+                array_push($gruppenIds, $temp);
+            }
+            return $gruppenIds;
+        }
+    } else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+
 }
 function getTeams(){
     $mysqli = setup();
