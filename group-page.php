@@ -31,7 +31,7 @@ if (!isset($_SESSION['id'])) {
             <li>|</li>
             <li><a href="user-page.php">Benutzer</a></li>
             <li>|</li>
-            <li><a>Abmelden</a></li>
+            <li><a href="php/logout.php">Abmelden</a></li>
         </ul>
         <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
         <p class="crumb">Aktivi Gruppe: xyz</p>

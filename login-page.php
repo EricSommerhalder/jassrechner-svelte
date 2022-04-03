@@ -1,3 +1,12 @@
+<?php
+// We need to use sessions, so you should always start sessions using the below code.
+session_start();
+// If the user is logged in redirect to the content page...
+if (isset($_SESSION['id'])) {
+	header('Location: group-page.php');
+	exit;
+}   
+?>
 <!DOCTYPE html>
 <html lang="de">
 
@@ -19,6 +28,7 @@
                 <input class="inputbox" type="text" placeholder="Benutzer" name="benutzer" required>
                 <input class="inputbox" type="password" placeholder="Passwort" name="passwort" required>
                 <button class="submitbtn" type="submit">AMÄLDE</button>
+                <small><?php echo $_SESSION['msgError'];?></small>
             </form>
             <small>Du hesch no kein Account? <a href="registration-page.php">Do gohts zur Registration</a></small>
         </main>

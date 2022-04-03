@@ -21,9 +21,11 @@
                 $_SESSION['loggedin'] = TRUE;
                 $_SESSION['name'] = $_POST['benutzer'];
                 $_SESSION['id'] = $id;
-                header('Location: ../new-group-page.php');
+                $_SESSION['msgError'] = '';
+                header('Location: ../group-page.php');
             } else {
-                echo 'Falsche Name/E-Mail oder Passwort';
+                $_SESSION['msgError'] = 'Falsche Name/E-Mail oder Passwort 1';
+                header('Location: ../login-page.php');
             }
         } else {
             //Try with e-mail
@@ -40,14 +42,16 @@
                         $_SESSION['loggedin'] = TRUE;
                         $_SESSION['name'] = $name;
                         $_SESSION['id'] = $id;
-                        header('Location: ../new-group-page.php');
+                        header('Location: ../group-page.php');
                     } else {
                         // Incorrect password
-                        echo 'Falsche Name/E-Mail oder Passwort';
+                        $_SESSION['msgError'] = 'Falsche Name/E-Mail oder Passwort 2';
+                        header('Location: ../login-page.php');
                     }
                 } else {
                     // Incorrect username
-                    echo 'Falsche Name/E-Mail oder Passwort';
+                    $_SESSION['msgError'] = 'Falsche Name/E-Mail oder Passwort 3';
+                    header('Location: ../login-page.php');
                 }
         
                 $stmt2->close();
