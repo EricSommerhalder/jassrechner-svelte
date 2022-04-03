@@ -40,7 +40,7 @@ if (!isset($_SESSION['activeGroup'])) {
             <li><a href="php/logout.php">Abmelden</a></li>
         </ul>
         <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
-        <p class="crumb">Aktivi Gruppe: <?php ini_set('display_errors', 1); ini_set('display_startup_errors', 1); error_reporting(E_ALL); echo getGroupName($_SESSION['activeGroup'])?></p>
+        <p class="crumb">Aktivi Gruppe: <?php echo getGroupName($_SESSION['activeGroup'])?></p>
     </nav>
     <div class="content">
         <aside class="leftside">
