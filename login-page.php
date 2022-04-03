@@ -28,7 +28,7 @@ if (isset($_SESSION['id'])) {
                 <input class="inputbox" type="text" placeholder="Benutzer" name="benutzer" required>
                 <input class="inputbox" type="password" placeholder="Passwort" name="passwort" required>
                 <button class="submitbtn" type="submit">AMÄLDE</button>
-                <small><?php echo $_SESSION['msgError'];?></small>
+                <small><?php if (isset($_SESSION['msgError'])){echo $_SESSION['msgError'];} ?></small>
             </form>
             <small>Du hesch no kein Account? <a href="registration-page.php">Do gohts zur Registration</a></small>
         </main>
