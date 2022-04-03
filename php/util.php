@@ -184,6 +184,23 @@ function getNoPlayers(){
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
 }
+function getGroupName($groupId){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT name FROM Gruppen WHERE id = ?')) {
+        $stmt->bind_param('s', $groupId);
+        
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($name);
+            $stmt->fetch();
+            return $name;
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+}
 function getGroups(){
     $mysqli = setup();
     if ($stmt = $mysqli->prepare('SELECT (gruppenId) FROM `Gruppen_Benutzer` WHERE benutzerId = ? ORDER by gruppenId ASC')) {
