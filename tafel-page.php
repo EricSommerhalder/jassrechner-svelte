@@ -95,10 +95,10 @@ if ($group == NULL){
         <li>|</li>
         <li><a href="user-page.php">Benutzer</a></li>
         <li>|</li>
-        <li><a>Abmelden</a></li>
+        <li><a href="php/logout.php">Abmelden</a></li>
       </ul>
       <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
-      <p class="crumb">Aktivi Gruppe: xyz</p>
+      <p class="crumb">Aktivi Gruppe: <?php echo getGroupName($_SESSION['activeGroup'])?></p>
       <?php echo "BenutzerId: " . $_SESSION['id'] . " Aktive Gruppe: " . $_SESSION['activeGroup'] . " Aktives Spiel " . $_SESSION['activeGame'] ?>
     </nav>
     <div class="content">

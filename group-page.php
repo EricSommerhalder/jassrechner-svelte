@@ -37,8 +37,7 @@ if (!isset($_SESSION['activeGroup'])) {
             <li>|</li>
             <li><a href="group-page.php">Gruppe</a></li>
             <li>|</li>
-            <li><a href="settings-page.php">Einstellungen</a></li>
-            <li>|</li>
+
             <li><a href="user-page.php">Benutzer</a></li>
             <li>|</li>
             <li><a href="php/logout.php">Abmelden</a></li>
@@ -61,7 +60,7 @@ if (!isset($_SESSION['activeGroup'])) {
             </div>";
             }
             ?>
-            <button type="submit">Neui Gruppe erstelle</button>
+            <button><a href="new-group-page.php">Neui Gruppe erstelle</a></button>
         </aside>
         <main>
             <h2>Di aktive Gruppe:</h2>

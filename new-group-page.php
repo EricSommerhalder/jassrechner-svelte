@@ -2,10 +2,14 @@
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
 // If the user is not logged in redirect to the login page...
+require('php/util.php');
 if (!isset($_SESSION['id'])) {
 	header('Location: login-page.php');
 	exit;
-}   
+}
+if (!isset($_SESSION['activeGroup'])) {
+    getActiveGroup($_SESSION['id']);
+}    
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -46,10 +50,10 @@ if (!isset($_SESSION['id'])) {
             <li>|</li>
             <li><a href="user-page.php">Benutzer</a></li>
             <li>|</li>
-            <li><a>Abmelden</a></li>
+            <li><a href="php/logout.php">Abmelden</a></li>
         </ul>
         <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
-        <p class="crumb">Aktivi Gruppe: xyz</p>
+        <p class="crumb">Aktivi Gruppe: <?php echo getGroupName($_SESSION['activeGroup'])?></p>
     </nav>
     <!--<div class="groupsection">
           <label class="selectGroup">Gruppe X
@@ -85,16 +89,17 @@ if (!isset($_SESSION['id'])) {
             </label>
         </div>
         <div id="turnierInfo" style="display:none">
-            <input placeholder="Wieviel Pünggt bruuchts zum gwünne?" name="gewonnenBei" />
-            <input placeholder="Wieviel Pünggt gits pro Match?" name="punkteProMatch" />
-            <input placeholder="Wieviel Pünggt gits pro Gegematch?" name="punkteProGegenmatch" />
-            <input placeholder="Wieviel Pünggt gits füre Sieg" name="punkteProSieg" />
+            <input placeholder="Pünggt zum Turniersieg?" name="gewonnenBei" />
+            <input placeholder="Pünggt füre Match?" name="punkteProMatch" />
+            <input placeholder="Pünggt füre Kontermatch?" name="punkteProGegenmatch" />
+            <input placeholder="Pünggt füre Sieg" name="punkteProSieg" />
         </div>
         <div id="geldInfo" style="display:none">
             <input placeholder="Gäld pro Punggt" name="geldProPunkt" />
         </div>
-        <p>Spieler hinzuefiege. Mehreri durch ; trenne</p>
-        <input placeholder="Spieler" name="player" />
+        <p>Benutzer hinzuefiege, wo uf d Gruppe Zuegriff sölle ha.</p>
+        <small>Mehreri durch ; trenne</small>
+        <input placeholder="Benutzer" name="player" />
         <button type="submit">Gruppe erstelle</button>
     </form>
 
