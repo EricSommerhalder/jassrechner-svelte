@@ -1,4 +1,5 @@
 <?php
+
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
 require('php/util.php');

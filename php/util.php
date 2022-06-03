@@ -221,6 +221,13 @@ function getGroups(){
     }
 
 }
+function getGroupNames($groupIds){
+    $toReturn = [];
+    for ($i = 0; $i < count($groupIds); $i++){
+        arrary_push($toReturn, getGroupName[$groupIds[$i]]);
+    }
+    return $toReturn;
+}
 function getTeams(){
     $mysqli = setup();
     if ($stmt = $mysqli->prepare('SELECT (teamId) FROM `Gruppen_Teams` WHERE gruppenId = ? ORDER by teamId ASC')) {

@@ -23,7 +23,11 @@ if (!isset($_SESSION['activeGroup'])) {
     <link rel="stylesheet" href="css/seatorder.css">
     <link rel="stylesheet" href="css/checkbox.css">
 </head>
-
+<script>
+    function loadGroupSection(){
+        
+    }
+</script> 
 <body>
     <nav>
         <ul>
@@ -44,26 +48,19 @@ if (!isset($_SESSION['activeGroup'])) {
     </nav>
     <div class="content">
         <aside class="leftside">
-            <ul>
-                <li>Gruppe 1</li>
-                <li>Gruppe 2</li>
-                <li>Gruppe 3</li>
-            </ul>
-            <div id="result"><?php require("php/prepareGroups.php"); echo prep(); ?></div>
-            <div class="groupsection">
-                <label class="selectionBtn">Gruppe X
-                    <input type="radio" name="gruppenwahl">
-                    <span class="checkmark"></span>
+            <?php 
+            $arr = getGroups();
+            for ($i = 0; $i < count($arr); $i++){
+                $group = getGroupName($arr[$i]);
+                echo "<div class=\"groupsection\">
+                <label class=\"selectionBtn\">$group
+                    <input type=\"radio\" name=\"gruppenwahl\">
+                    <span class=\"checkmark\"></span>
                 </label>
-                <a class="deleteGroup">Diese Gruppe löschen</a>
-            </div>
-            <div class="groupsection">
-                <label class="selectionBtn">Gruppe Y
-                    <input type="radio" name="gruppenwahl">
-                    <span class="checkmark"></span>
-                </label>
-                <a class="deleteGroup">Diese Gruppe löschen</a>
-            </div>
+                <a class=\"deleteGroup\">Die Gruppe lösche</a>
+            </div>";
+            }
+            ?>
             <button type="submit">Neui Gruppe erstelle</button>
         </aside>
         <main>
