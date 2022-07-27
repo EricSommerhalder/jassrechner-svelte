@@ -88,6 +88,7 @@ if (!isset($_SESSION['activeGroup'])) {
             </div>
             <button type="reset">Sitzornig ändere</button>
             <button type="submit">Neui Sitzornig bestätige</button>
+            <button type="reset">Abbräche</button>
         </main>
         <aside class="rightside">
             <p>Folgendi Istellige gältet für di aktivi Gruppe:</p>
