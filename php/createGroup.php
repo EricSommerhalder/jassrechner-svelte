@@ -50,7 +50,12 @@
             } else {
                 $geld = $defaultGeld;
             }
-            $sql = "INSERT INTO Spiele (startdatum, ausgeber, geld, tafel) VALUES ('$startDatum', $ausgeber, $geld, '$tafel')";
+            if (isset($_POST['minimum']) && $_POST['minimum'] != ''){
+                $minimum = (float) $_POST['minimum'];
+            } else {
+                $minimum = $defaultMinimum;
+            }
+            $sql = "INSERT INTO Spiele (startdatum, ausgeber, geld, minimum, tafel) VALUES ('$startDatum', $ausgeber, $geld, $minimum, '$tafel')";
             if ($mysqli->query($sql) === FALSE) {
                 exit( "Fähler bim spiel erstelle! " . $sql . "<br>" . $mysqli->error);
             }

@@ -92,6 +92,7 @@ if (!isset($_SESSION['id'])) {
         </div>
         <div id="geldInfo" style="display:none">
             <input placeholder="Gäld pro Punggt" name="geldProPunkt" />
+            <input placeholder="Minimum pro Spieler" name="minimum" />
         </div>
         <p>Spieler hinzuefiege. Mehreri durch ; trenne</p>
         <input placeholder="Spieler" name="player" />

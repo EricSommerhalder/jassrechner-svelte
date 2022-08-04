@@ -5,6 +5,7 @@ $defaultMatsch = 1;
 $defaultKontermatsch = 2;
 $defaultSieg = 1;
 $defaultGeld = 0.1;
+$defaultMinimum = 0.5;
 $defaultTeamA = 'Team A';
 $defaultTeamB = 'Team B';
 $defaultPlayerA = 'Spieler A';
@@ -12,11 +13,15 @@ $defaultPlayerB = 'Spieler B';
 
 function getGroupByName($name){
     $mysqli = setup();
-    if ($stmt = $mysqli->prepare('SELECT id, istTurnier, anzahlSpieler, aktivesSpiel FROM Gruppen WHERE name = ?')) {
+    if ($stmt = $mysqli->prepare('SELECT id FROM Gruppen WHERE name = ?')) {
         $stmt->bind_param('s', $name);
         $stmt->execute();
         $stmt->store_result();
-        return $stmt;
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($id);
+            $stmt->fetch();
+            return $id;
+        }
     }
     else {
         exit('Öppis het nid funktioniert, bitte nomol probiere');
@@ -92,6 +97,9 @@ function setActiveGroup($userId, $groupId) {
     } else {
         echo "Nid könne update " . $mysqli->error;
     }
+    getActiveGroup($userId);
+    getNoPlayers();
+    getPlayerNames();
     $mysqli->close();
 }
 function getActiveGroup($userId) {
@@ -167,6 +175,22 @@ function getAusgeber(){
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
 }
+function getNoPlayersByName($name){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT anzahlSpieler FROM Gruppen WHERE name = ?')) {
+        $stmt->bind_param('s', $name);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($amount);
+            $stmt->fetch();
+            return $amount;
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+}
 function getNoPlayers(){
     $mysqli = setup();
     if ($stmt = $mysqli->prepare('SELECT anzahlSpieler FROM Gruppen WHERE id = ?')) {
@@ -219,12 +243,32 @@ function getGroups(){
     } else {
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
-
 }
-function getGroupNames($groupIds){
+
+function getGames($groupId){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT (spielId) FROM `Gruppen_Spiele` WHERE gruppenId = ? ORDER by gruppenId ASC')) {
+        $stmt->bind_param('s', $groupId);   
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($temp);
+            $spieleIds = [];
+            for ($i = 0; $i < $stmt->num_rows; $i++){
+                $stmt->fetch();
+                array_push($spieleIds, $temp);
+            }
+            return $spieleIds;
+        }
+    } else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+}
+function getGroupNames(){
     $toReturn = [];
-    for ($i = 0; $i < count($groupIds); $i++){
-        arrary_push($toReturn, getGroupName[$groupIds[$i]]);
+    $arr = getGroups();
+    for ($i = 0; $i < count($arr); $i++){
+        array_push($toReturn, getGroupName($arr[$i]));
     }
     return $toReturn;
 }
@@ -247,13 +291,33 @@ function getTeams(){
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
 }
+function getTeamsById($gameId){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT (teamId) FROM `Gruppen_Teams` WHERE gruppenId = ? ORDER by teamId ASC')) {
+        $stmt->bind_param('s', $gameId);   
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($temp);
+            $teamIds = [];
+            $stmt->fetch();
+            array_push($teamIds, $temp);
+            $stmt->fetch();
+            array_push($teamIds, $temp);
+            return $teamIds;
+        }
+    } else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+}
 function getPlayerNames(){
             $teamIds = getTeams();
             $arr = [];
             foreach ($teamIds as &$id){
                 $arr = array_merge($arr, getPlayerNamesOfTeam($id));
             }
-            $_SESSION['players'] = $arr;  
+            $_SESSION['players'] = $arr;
+            return $arr;  
 }
 function getPlayerNamesOfTeam($teamId){
     $mysqli = setup();
@@ -278,6 +342,7 @@ function getTeamNames(){
         array_push($arr, getTeamName($id));
     }
     $_SESSION['teamnames'] = $arr;
+    return $arr;
 }
 function getTeamName($id){
     $mysqli = setup();
@@ -338,5 +403,50 @@ function setAusgeber(){
         echo "Nid könne update " . $mysqli->error;
     }
     $mysqli->close();
+}
+
+function isTournament($name){
+    $group = getGroupByName($name);
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT istTurnier FROM Gruppen WHERE id = ?')) {
+        $stmt->bind_param('s', $group);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($re);
+            $stmt->fetch();
+            return $re;
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+}
+function getSettings($name){
+    $group = getGroupByName($name);
+    $game = getActiveGame($group);
+    $keys = ['turniersieg', 'matsch', 'kontermatsch', 'sieg', 'geld', 'minimum'];
+    $arr = [];
+    foreach ($keys as &$key){
+        array_push($arr, getSettingsVal($game, $key));
+    }
+    return $arr; 
+}
+
+function getSettingsVal($game, $key){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT ' . $key . ' FROM Spiele WHERE id = ?')) {
+        $stmt->bind_param('s', $game);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($re);
+            $stmt->fetch();
+            return $re;
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere' . $mysqli -> error);
+    }
 }
 ?>
