@@ -95,11 +95,10 @@ if ($group == NULL){
         <li>|</li>
         <li><a href="user-page.php">Benutzer</a></li>
         <li>|</li>
-        <li><a>Abmelden</a></li>
+        <li><a href="php/logout.php">Abmelden</a></li>
       </ul>
       <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
-      <p class="crumb">Aktivi Gruppe: xyz</p>
-      <?php echo "BenutzerId: " . $_SESSION['id'] . " Aktive Gruppe: " . $_SESSION['activeGroup'] . " Aktives Spiel " . $_SESSION['activeGame'] ?>
+      <p class="crumb">Aktivi Gruppe: <?php echo getGroupName($_SESSION['activeGroup'])?></p>
     </nav>
     <div class="content">
         <aside class="leftside"></aside>
@@ -175,19 +174,37 @@ if ($group == NULL){
             </div>
         </main>
         <aside class="rightside">
-            <p id="ausgeberFeld">Uusgäh dörf: <?php echo $_SESSION['players'][$_SESSION['ausgeber']] ?></p>
-            >
-            <div class="infobox_turnier">
+            <div class="ausgeberBox">Uusgäh dörf:<br> <?php echo $_SESSION['players'][$_SESSION['ausgeber']] ?></div>
+            <!--<div class="infobox_turnier">
                 <table>
-
+                <tr>
+                    <td colspan="3">Zwischenstand Turnier</td>      
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Team 1</td>
+                    <td>Team 2</td>
+                </tr>
+                <tr>
+                    <td>Punkte</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Zwischenstand Spiel</td>
+                </tr>
+                <tr>
+                    <td>Matchpunkte</td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 </table>
-            </div>
+            </div>-->
             <div class="infobox_cashgame">
-                <table>
+                <p>Team 1 müend<br>5 Stutz<br>pro Spiiler zahle</p>
 
                 </table>
             </div>
-            <p> <?php foreach($_SESSION['tafel'] as &$a) { echo $a;} ?> </p>
         </aside>
     </div>
     <footer>

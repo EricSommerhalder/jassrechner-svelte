@@ -40,8 +40,7 @@ if (!isset ($_SESSION['noPlayers'])) {
             <li>|</li>
             <li><a href="group-page.php">Gruppe</a></li>
             <li>|</li>
-            <li><a href="settings-page.php">Einstellungen</a></li>
-            <li>|</li>
+
             <li><a href="user-page.php">Benutzer</a></li>
             <li>|</li>
             <li><a href="php/logout.php">Abmelden</a></li>
@@ -51,6 +50,7 @@ if (!isset ($_SESSION['noPlayers'])) {
     </nav>
     <div class="content">
         <aside class="leftside">
+
             <aside id="res">       
             </aside>
             <a href="new-group-page.php">
