@@ -133,7 +133,7 @@ input {
 
 .inputbox {
     width: 60%;
-}
+}ccs
 
 .teamname {
     display: -webkit-box;
@@ -147,6 +147,12 @@ input {
 
 .teamname input {
     width: 180px;
+}
+
+.tinyInput {
+    width: 60px;
+    height: 30px;
+    padding: 20px 0;
 }
 
 button {

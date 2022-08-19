@@ -376,6 +376,7 @@ if (!isset ($_SESSION['noPlayers'])) {
     function liHelper(text, placeholder, id, isActive){
         child = document.createElement('li');
         i = document.createElement("input");
+        i.classList.add('tinyInput');
         i.id = id;
         i.placeholder = placeholder;
         if (!isActive){
