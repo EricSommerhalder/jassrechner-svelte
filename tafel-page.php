@@ -64,10 +64,116 @@ if ($group == NULL){
                 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
             },
             body: `id=${id}&value=${val}`,
-        })
+        }).then((response) => response.text()).then((res) => loadAusgeber(res));
         x.disabled = true;
+        x.value = getDisziString(parseInt(id.substring(1)), val);
+        getTotal(); 
     }
 
+    function getDisziString(multiplicator, value){
+        if (value == -1){
+            return "";
+        }
+        return value.toString() + ' | ' + (multiplicator * value).toString();
+    }
+
+    function initValueFields(){
+        let chars = ['A', 'B'];
+        for (let i = 1; i <= 10; i++){
+            for (let a of chars){
+                index = i -1;
+                document.getElementById(a + i.toString()).value = getDisziString(i, getFieldVal(a + i.toString()))
+            }
+        }
+    }
+    function getFieldVal(id){
+        if (id == "A1"){
+            return <?php echo $_SESSION['tafel'][0]?>
+        }
+        if (id == "A2"){
+            return <?php echo $_SESSION['tafel'][1]?>
+        }
+        if (id == "A3"){
+            return <?php echo $_SESSION['tafel'][2]?>
+        }
+        if (id == "A4"){
+            return <?php echo $_SESSION['tafel'][3]?>
+        }
+        if (id == "A5"){
+            return <?php echo $_SESSION['tafel'][4]?>
+        }
+        if (id == "A6"){
+            return <?php echo $_SESSION['tafel'][5]?>
+        }
+        if (id == "A7"){
+            return <?php echo $_SESSION['tafel'][6]?>
+        }
+        if (id == "A8"){
+            return <?php echo $_SESSION['tafel'][7]?>
+        }
+        if (id == "A9"){
+            return <?php echo $_SESSION['tafel'][8]?>
+        }
+        if (id == "A10"){
+            return <?php echo $_SESSION['tafel'][9]?>
+        }
+        if (id == "B1"){
+            return <?php echo $_SESSION['tafel'][10]?>
+        }
+        if (id == "B2"){
+            return <?php echo $_SESSION['tafel'][11]?>
+        }
+        if (id == "B3"){
+            return <?php echo $_SESSION['tafel'][12]?>
+        }
+        if (id == "B4"){
+            return <?php echo $_SESSION['tafel'][13]?>
+        }
+        if (id == "B5"){
+            return <?php echo $_SESSION['tafel'][14]?>
+        }
+        if (id == "B6"){
+            return <?php echo $_SESSION['tafel'][15]?>
+        }
+        if (id == "B7"){
+            return <?php echo $_SESSION['tafel'][16]?>
+        }
+        if (id == "B8"){
+            return <?php echo $_SESSION['tafel'][17]?>
+        }
+        if (id == "B9"){
+            return <?php echo $_SESSION['tafel'][18]?>
+        }
+        if (id == "B10"){
+            return <?php echo $_SESSION['tafel'][19]?>
+        }
+        return NAN;
+    }
+
+    function getTotal(){
+        let totalA = 0;
+        let totalB = 0;
+        for (let i = 1; i <= 10; i++){
+            val = document.getElementById("A" + i.toString()).value;
+            if (val != ""){
+                totalA += parseInt(val.substring(val.indexOf("|") + 2))
+            }
+            val = document.getElementById("B" + i.toString()).value;
+            if (val != ""){
+                totalB += parseInt(val.substring(val.indexOf("|") + 2))
+            }
+        }
+        document.getElementById('totalA').value = totalA;
+        document.getElementById('totalB').value = totalB;
+        if (totalA > totalB){
+            document.getElementById('vorsprungA').value = totalA - totalB;
+            document.getElementById('vorsprungB').value = "";
+        }
+        if (totalB > totalA){
+            document.getElementById('vorsprungB').value = totalB - totalA;
+            document.getElementById('vorsprungA').value = "";
+        }
+    }
     function highlight(id) {
         document.getElementById(id.charAt(0) + '0').style.backgroundColor = "#4b6c64";
         document.getElementById('Diszi' + id.substring(1)).style.backgroundColor = "#4b6c64";
@@ -112,69 +218,69 @@ if ($group == NULL){
                     </tr>
                     <tr>
                         <td id="Diszi1">Schuufle</td>
-                        <td><input id="A1" value="<?php if ($_SESSION['tafel'][0] == -1) {echo '';} else { echo $_SESSION['tafel'][0];} ?>" onfocusout="focusOut('A1')" onfocus="highlight('A1')" /></td>
-                        <td><input id="B1" value="<?php if ($_SESSION['tafel'][10] == -1) {echo '';} else { echo $_SESSION['tafel'][10];} ?>" onfocusout="focusOut('B1')" onfocus="highlight('B1')" /></td>
+                        <td><input id="A1" onfocusout="focusOut('A1')" onfocus="highlight('A1')" /></td>
+                        <td><input id="B1" onfocusout="focusOut('B1')" onfocus="highlight('B1')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi2">Chrüüz</td>
-                        <td><input id="A2" value="<?php if ($_SESSION['tafel'][1] == -1) {echo '';} else { echo $_SESSION['tafel'][1];} ?>" onfocusout="focusOut('A2')" onfocus="highlight('A2')" /></td>
-                        <td><input id="B2" value="<?php if ($_SESSION['tafel'][11] == -1) {echo '';} else { echo $_SESSION['tafel'][11];} ?>" onfocusout="focusOut('B2')" onfocus="highlight('B2')" /></td>
+                        <td><input id="A2" onfocusout="focusOut('A2')" onfocus="highlight('A2')" /></td>
+                        <td><input id="B2" onfocusout="focusOut('B2')" onfocus="highlight('B2')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi3">Egge</td>
-                        <td><input id="A3" value="<?php if ($_SESSION['tafel'][2] == -1) {echo '';} else { echo $_SESSION['tafel'][2];} ?>" onfocusout="focusOut('A3')" onfocus="highlight('A3')" /></td>
-                        <td><input id="B3" value="<?php if ($_SESSION['tafel'][12] == -1) {echo '';} else { echo $_SESSION['tafel'][12];} ?>" onfocusout="focusOut('B3')" onfocus="highlight('B3')" /></td>
+                        <td><input id="A3" onfocusout="focusOut('A3')" onfocus="highlight('A3')" /></td>
+                        <td><input id="B3" onfocusout="focusOut('B3')" onfocus="highlight('B3')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi4">Härz</td>
-                        <td><input id="A4" value="<?php if ($_SESSION['tafel'][3] == -1) {echo '';} else { echo $_SESSION['tafel'][3];} ?>" onfocusout="focusOut('A4')" onfocus="highlight('A4')" /></td>
-                        <td><input id="B4" value="<?php if ($_SESSION['tafel'][13] == -1) {echo '';} else { echo $_SESSION['tafel'][13];} ?>" onfocusout="focusOut('B4')" onfocus="highlight('B4')" /></td>
+                        <td><input id="A4" onfocusout="focusOut('A4')" onfocus="highlight('A4')" /></td>
+                        <td><input id="B4" onfocusout="focusOut('B4')" onfocus="highlight('B4')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi5">Misere</td>
-                        <td><input id="A5" value="<?php if ($_SESSION['tafel'][4] == -1) {echo '';} else { echo $_SESSION['tafel'][4];} ?>" onfocusout="focusOut('A5')" onfocus="highlight('A5')" /></td>
-                        <td><input id="B5" value="<?php if ($_SESSION['tafel'][14] == -1) {echo '';} else { echo $_SESSION['tafel'][14];} ?>" onfocusout="focusOut('B5')" onfocus="highlight('B5')" /></td>
+                        <td><input id="A5" onfocusout="focusOut('A5')" onfocus="highlight('A5')" /></td>
+                        <td><input id="B5" onfocusout="focusOut('B5')" onfocus="highlight('B5')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi6">Unde</td>
-                        <td><input id="A6" value="<?php if ($_SESSION['tafel'][5] == -1) {echo '';} else { echo $_SESSION['tafel'][5];} ?>" onfocusout="focusOut('A6')" onfocus="highlight('A6')" /></td>
-                        <td><input id="B6" value="<?php if ($_SESSION['tafel'][15] == -1) {echo '';} else { echo $_SESSION['tafel'][15];} ?>" onfocusout="focusOut('B6')" onfocus="highlight('B6')" /></td>
+                        <td><input id="A6" onfocusout="focusOut('A6')" onfocus="highlight('A6')" /></td>
+                        <td><input id="B6" onfocusout="focusOut('B6')" onfocus="highlight('B6')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi7">Obe</td>
-                        <td><input id="A7" value="<?php if ($_SESSION['tafel'][6] == -1) {echo '';} else { echo $_SESSION['tafel'][6];} ?>" onfocusout="focusOut('A7')" onfocus="highlight('A7')" /></td>
-                        <td><input id="B7" value="<?php if ($_SESSION['tafel'][16] == -1) {echo '';} else { echo $_SESSION['tafel'][16];} ?>" onfocusout="focusOut('B7')" onfocus="highlight('B7')" /></td>
+                        <td><input id="A7" onfocusout="focusOut('A7')" onfocus="highlight('A7')" /></td>
+                        <td><input id="B7" onfocusout="focusOut('B7')" onfocus="highlight('B7')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi8">Slalom</td>
-                        <td><input id="A8" value="<?php if ($_SESSION['tafel'][7] == -1) {echo '';} else { echo $_SESSION['tafel'][7];} ?>" onfocusout="focusOut('A8')" onfocus="highlight('A8')" /></td>
-                        <td><input id="B8" value="<?php if ($_SESSION['tafel'][17] == -1) {echo '';} else { echo $_SESSION['tafel'][17];} ?>" onfocusout="focusOut('B8')" onfocus="highlight('B8')" /></td>
+                        <td><input id="A8" onfocusout="focusOut('A8')" onfocus="highlight('A8')" /></td>
+                        <td><input id="B8" onfocusout="focusOut('B8')" onfocus="highlight('B8')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi9"><?php if ($_SESSION['noPlayers'] == 6){ echo '2-2-2' ;} elseif ($_SESSION['noPlayers'] == 4){ echo '3-3-3' ;} else {echo 'kei Ahnig';}?></td>
-                        <td><input id="A9" value="<?php if ($_SESSION['tafel'][8] == -1) {echo '';} else { echo $_SESSION['tafel'][8];} ?>" onfocusout="focusOut('A9')" onfocus="highlight('A9')" /></td>
-                        <td><input id="B9" value="<?php if ($_SESSION['tafel'][18] == -1) {echo '';} else { echo $_SESSION['tafel'][18];} ?>" onfocusout="focusOut('B9')" onfocus="highlight('B9')" /></td>
+                        <td><input id="A9" onfocusout="focusOut('A9')" onfocus="highlight('A9')" /></td>
+                        <td><input id="B9" onfocusout="focusOut('B9')" onfocus="highlight('B9')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi10">Frei</td>
-                        <td><input id="A10" value="<?php if ($_SESSION['tafel'][9] == -1) {echo '';} else { echo $_SESSION['tafel'][9];} ?>" onfocusout="focusOut('A10')" onfocus="highlight('A10')" /></td>
-                        <td><input id="B10" value="<?php if ($_SESSION['tafel'][19] == -1) {echo '';} else { echo $_SESSION['tafel'][19];} ?>" onfocusout="focusOut('B10')" onfocus="highlight('B10')" /></td>
+                        <td><input id="A10" onfocusout="focusOut('A10')" onfocus="highlight('A10')" /></td>
+                        <td><input id="B10" onfocusout="focusOut('B10')" onfocus="highlight('B10')" /></td>
                     </tr>
                     <tr>
                         <td>Total</td>
-                        <td></td>
-                        <td></td>
+                        <td><input id="totalA" disabled></input></td>
+                        <td><input id="totalB" disabled></input></td>
                     </tr>
                     <tr>
                         <td>Vorsprung</td>
-                        <td></td>
-                        <td></td>
+                        <td><input id="vorsprungA" disabled></input></td>
+                        <td><input id="vorsprungB" disabled></input></td>
                     </tr>
                 </table>
             </div>
         </main>
         <aside class="rightside">
-            <div class="ausgeberBox">Uusgäh dörf:<br> <?php echo $_SESSION['players'][$_SESSION['ausgeber']] ?></div>
+            <div class="ausgeberBox" id="ausgeber"></div>
             <!--<div class="infobox_turnier">
                 <table>
                 <tr>
@@ -212,6 +318,12 @@ if ($group == NULL){
 
 </body>
 <script>
+    initValueFields();
+    getTotal();
+    function loadAusgeber(name){
+        daddy = document.getElementById("ausgeber");
+        daddy.innerHTML = "Uusgäh dörf:<br> " + name;
+    }
     for (const c of ['A', 'B']) {
         for (let i = 1; i < 11; i++) {
             const id = c + i.toString();
@@ -227,7 +339,7 @@ if ($group == NULL){
             });
         }
     }
-
+    loadAusgeber('<?php echo $_SESSION['players'][$_SESSION['ausgeber']]?>');
 </script>
 
 </html>

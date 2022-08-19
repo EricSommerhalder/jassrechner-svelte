@@ -53,6 +53,6 @@ if ($newAusgeber >= $_SESSION['noPlayers']/2 && $bDone){
 }
 $_SESSION['ausgeber'] = $newAusgeber;
 setAusgeber();
-
+echo $_SESSION['players'][$newAusgeber];
 
 ?>
