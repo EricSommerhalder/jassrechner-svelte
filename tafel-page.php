@@ -50,6 +50,85 @@ if ($group == NULL){
 ?>
 <!DOCTYPE html>
 <script>
+    let deleteState = false;
+    function deleteClicked(){
+        deleteState = !deleteState;
+        if (deleteState){
+            deleteStateReached();
+        }
+        if (!deleteState){
+            deleteStateLeft();
+        }
+    }
+    function deleteStateLeft(){
+        button = document.getElementById("deleteButton");
+        button.innerText = "Iitrag lösche";
+        color = "";
+        let chars = ['A', 'B'];
+        for (let i = 1; i <= 10; i++){
+            for (let a of chars){
+                id  = a + i.toString();
+                grandPa = document.getElementById("cell" + id);
+                evilTwin = document.getElementById("s" + id);
+                child = document.createElement("input");
+                child.id = id;
+                child.setAttribute('onfocusout', "focusOut('" + id + "')");
+                child.setAttribute('onfocus', "highlight('" + id + "')");
+                child.style.backgroundColor = color;
+                child.value = evilTwin.innerText;
+                if (child.value == ""){
+                    child.disabled = false;
+                } else {
+                    child.disabled = true;
+                }
+            child.addEventListener("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    focusOut(id);
+                }
+            });
+                grandPa.appendChild(child);
+                grandPa.removeChild(evilTwin);
+            }
+        }
+    }
+    function deleteStateReached(){
+        button = document.getElementById("deleteButton");
+        button.innerText = "Löschmodus vrlo";
+        color = "#800000";
+        let chars = ['A', 'B'];
+        for (let i = 1; i <= 10; i++){
+            for (let a of chars){
+                id  = a + i.toString();
+                grandPa = document.getElementById("cell" + id);
+                daddy = document.getElementById(id);
+                daddy.disabled = true;
+                child = document.createElement("span");
+                child.setAttribute("onclick", 'deleteField("' + id + '")');
+                child.innerText = daddy.value;
+                if (daddy.value != "") {
+                    child.style.backgroundColor = "#800000";
+                }
+                child.style.display = "block";
+                child.id = "s" + id;
+                grandPa.appendChild(child);
+                grandPa.removeChild(daddy);
+            }
+        }
+    }
+    function deleteField(id){
+        s = document.getElementById("s" + id);
+        s.innerText = "";
+        fetch('php/deleteTafelValue.php', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+            body: `id=${id}`,
+        }).then((response) => response.text()).then((res) => loadAusgeber(res));
+        deleteClicked();
+        getTotal(); 
+    }
     function focusOut(id) {
         var x = document.getElementById(id);
         document.getElementById(id.charAt(0) + '0').style.backgroundColor = "";
@@ -207,7 +286,9 @@ if ($group == NULL){
       <p class="crumb">Aktivi Gruppe: <?php echo getGroupName($_SESSION['activeGroup'])?></p>
     </nav>
     <div class="content">
-        <aside class="leftside"></aside>
+        <aside class="leftside">
+            <button id= "deleteButton" type="submit" onclick="deleteClicked()">Iitrag lösche</button>
+        </aside>
         <main>
             <div class="table">
                 <table>
@@ -218,53 +299,53 @@ if ($group == NULL){
                     </tr>
                     <tr>
                         <td id="Diszi1">Schuufle</td>
-                        <td><input id="A1" onfocusout="focusOut('A1')" onfocus="highlight('A1')" /></td>
-                        <td><input id="B1" onfocusout="focusOut('B1')" onfocus="highlight('B1')" /></td>
+                        <td id = "cellA1"><input id="A1" onfocusout="focusOut('A1')" onfocus="highlight('A1')" /></td>
+                        <td id = "cellB1"><input id="B1" onfocusout="focusOut('B1')" onfocus="highlight('B1')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi2">Chrüüz</td>
-                        <td><input id="A2" onfocusout="focusOut('A2')" onfocus="highlight('A2')" /></td>
-                        <td><input id="B2" onfocusout="focusOut('B2')" onfocus="highlight('B2')" /></td>
+                        <td id = "cellA2"><input id="A2" onfocusout="focusOut('A2')" onfocus="highlight('A2')" /></td>
+                        <td id = "cellB2"><input id="B2" onfocusout="focusOut('B2')" onfocus="highlight('B2')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi3">Egge</td>
-                        <td><input id="A3" onfocusout="focusOut('A3')" onfocus="highlight('A3')" /></td>
-                        <td><input id="B3" onfocusout="focusOut('B3')" onfocus="highlight('B3')" /></td>
+                        <td id = "cellA3"><input class ="res" id="A3" onfocusout="focusOut('A3')" onfocus="highlight('A3')" /></td>
+                        <td id = "cellB3"><input id="B3" onfocusout="focusOut('B3')" onfocus="highlight('B3')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi4">Härz</td>
-                        <td><input id="A4" onfocusout="focusOut('A4')" onfocus="highlight('A4')" /></td>
-                        <td><input id="B4" onfocusout="focusOut('B4')" onfocus="highlight('B4')" /></td>
+                        <td id = "cellA4"><input id="A4" onfocusout="focusOut('A4')" onfocus="highlight('A4')" /></td>
+                        <td id = "cellB4"><input id="B4" onfocusout="focusOut('B4')" onfocus="highlight('B4')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi5">Misere</td>
-                        <td><input id="A5" onfocusout="focusOut('A5')" onfocus="highlight('A5')" /></td>
-                        <td><input id="B5" onfocusout="focusOut('B5')" onfocus="highlight('B5')" /></td>
+                        <td id = "cellA5"><input id="A5" onfocusout="focusOut('A5')" onfocus="highlight('A5')" /></td>
+                        <td id = "cellB5"><input id="B5" onfocusout="focusOut('B5')" onfocus="highlight('B5')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi6">Unde</td>
-                        <td><input id="A6" onfocusout="focusOut('A6')" onfocus="highlight('A6')" /></td>
-                        <td><input id="B6" onfocusout="focusOut('B6')" onfocus="highlight('B6')" /></td>
+                        <td id = "cellA6"><input id="A6" onfocusout="focusOut('A6')" onfocus="highlight('A6')" /></td>
+                        <td id = "cellB6"><input id="B6" onfocusout="focusOut('B6')" onfocus="highlight('B6')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi7">Obe</td>
-                        <td><input id="A7" onfocusout="focusOut('A7')" onfocus="highlight('A7')" /></td>
-                        <td><input id="B7" onfocusout="focusOut('B7')" onfocus="highlight('B7')" /></td>
+                        <td id = "cellA7"><input id="A7" onfocusout="focusOut('A7')" onfocus="highlight('A7')" /></td>
+                        <td id = "cellB7"><input id="B7" onfocusout="focusOut('B7')" onfocus="highlight('B7')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi8">Slalom</td>
-                        <td><input id="A8" onfocusout="focusOut('A8')" onfocus="highlight('A8')" /></td>
-                        <td><input id="B8" onfocusout="focusOut('B8')" onfocus="highlight('B8')" /></td>
+                        <td id = "cellA8"><input id="A8" onfocusout="focusOut('A8')" onfocus="highlight('A8')" /></td>
+                        <td id = "cellB8"><input id="B8" onfocusout="focusOut('B8')" onfocus="highlight('B8')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi9"><?php if ($_SESSION['noPlayers'] == 6){ echo '2-2-2' ;} elseif ($_SESSION['noPlayers'] == 4){ echo '3-3-3' ;} else {echo 'kei Ahnig';}?></td>
-                        <td><input id="A9" onfocusout="focusOut('A9')" onfocus="highlight('A9')" /></td>
-                        <td><input id="B9" onfocusout="focusOut('B9')" onfocus="highlight('B9')" /></td>
+                        <td id = "cellA9"><input id="A9" onfocusout="focusOut('A9')" onfocus="highlight('A9')" /></td>
+                        <td id = "cellB9"><input id="B9" onfocusout="focusOut('B9')" onfocus="highlight('B9')" /></td>
                     </tr>
                     <tr>
                         <td id="Diszi10">Frei</td>
-                        <td><input id="A10" onfocusout="focusOut('A10')" onfocus="highlight('A10')" /></td>
-                        <td><input id="B10" onfocusout="focusOut('B10')" onfocus="highlight('B10')" /></td>
+                        <td id = "cellA10"><input id="A10" onfocusout="focusOut('A10')" onfocus="highlight('A10')" /></td>
+                        <td id = "cellB10"><input id="B10" onfocusout="focusOut('B10')" onfocus="highlight('B10')" /></td>
                     </tr>
                     <tr>
                         <td>Total</td>
@@ -281,7 +362,7 @@ if ($group == NULL){
         </main>
         <aside class="rightside">
             <div class="ausgeberBox" id="ausgeber"></div>
-            <!--<div class="infobox_turnier">
+            <div class="infobox_turnier">
                 <table>
                 <tr>
                     <td colspan="3">Zwischenstand Turnier</td>      
@@ -305,7 +386,7 @@ if ($group == NULL){
                     <td></td>
                 </tr>
                 </table>
-            </div>-->
+            </div>
             <div class="infobox_cashgame">
                 <p>Team 1 müend<br>5 Stutz<br>pro Spiiler zahle</p>
 
