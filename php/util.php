@@ -291,10 +291,10 @@ function getTeams(){
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
 }
-function getTeamsById($gameId){
+function getTeamsById($groupId){
     $mysqli = setup();
     if ($stmt = $mysqli->prepare('SELECT (teamId) FROM `Gruppen_Teams` WHERE gruppenId = ? ORDER by teamId ASC')) {
-        $stmt->bind_param('s', $gameId);   
+        $stmt->bind_param('s', $groupId);   
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
@@ -422,6 +422,22 @@ function isTournament($name){
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
 }
+function isTournamentById($id){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT istTurnier FROM Gruppen WHERE id = ?')) {
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($re);
+            $stmt->fetch();
+            return $re;
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+}
 function getSettings($name){
     $group = getGroupByName($name);
     $game = getActiveGame($group);
@@ -448,5 +464,185 @@ function getSettingsVal($game, $key){
     else {
         exit('Öppis het nid funktioniert, bitte nomol probiere' . $mysqli -> error);
     }
+}
+
+function getCashDetails($group){
+    $game = getActiveGame($group);
+    $arr = [];
+    $keys = ['geld', 'minimum'];
+    foreach ($keys as &$key){
+        array_push($arr, getSettingsVal($game, $key));
+    }
+    return $arr;
+}
+
+function getCashScores($group){
+    $teams = getTeamsById($group);
+    $arr = [];
+    for ($i = 0; $i < 2; $i ++){
+        $team = $teams[$i];
+        $mysqli = setup();
+        if ($stmt = $mysqli->prepare('SELECT schulden FROM Teams WHERE id = ?')) {
+            $stmt->bind_param('s', $team);
+            $stmt->execute();
+            $stmt->store_result();
+            if ($stmt->num_rows > 0) {
+                $stmt->bind_result($re);
+                $stmt->fetch();
+                array_push($arr, $re);
+            }
+        }
+        else {
+            exit('Öppis het nid funktioniert, bitte nomol probiere' . $mysqli -> error);
+        }
+    }
+    return $arr;
+}
+function getTournamentPoints($team){
+    $mysqli = setup();
+    if ($stmt = $mysqli->prepare('SELECT turnierpunkte FROM Teams WHERE id = ?')) {
+        $stmt->bind_param('s', $team);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($re);
+            $stmt->fetch();
+            return $re;
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere' . $mysqli -> error);
+    }
+}
+function getTournamentScore($group){
+    $game = getActiveGame($group);
+    $arr = [];
+    $teams = getTeamsById($group);
+    foreach ($teams as &$team){
+        array_push($arr, getTournamentPoints($team));
+    }
+    $keys = ['matsch', 'kontermatsch'];
+    foreach ($keys as &$key){
+        array_push($arr, getSettingsVal($game, $key));
+    }
+    return $arr;
+}
+
+function endActiveGame(){
+    $game = $_SESSION['activeGame'];
+    $val = date("d.m.Y");
+    $mysqli = setup();
+    $sql = "UPDATE Spiele SET enddatum='$val' WHERE id=$game";
+    if ($mysqli->query($sql) === TRUE) {
+    } else {
+        echo "Nid könne update " . $mysqli->error;
+    }
+    $mysqli->close();
+}
+
+function updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB){
+    $dets = getTournamentScore($_SESSION['activeGroup']);
+    $toAddA = $matchA * $dets[2] + $countermatchA * $dets[3];
+    $toAddB = $matchB * $dets[2] + $countermatchB * $dets[3];
+    $teams = getTeams();
+    $oldValA = $dets[0];
+    $oldValB = $dets[1];
+    $toAddA+= $oldValA;
+    $toAddB+= $oldValB;
+    setTournamentScore($teams[0], $toAddA);
+    setTournamentScore($teams[1], $toAddB);
+}
+
+function setTournamentScore($team, $score){
+    $mysqli = setup();
+    $sql = "UPDATE Teams SET turnierpunkte=$score WHERE id=$team";
+    if ($mysqli->query($sql) === TRUE) {
+    } else {
+        echo "Nid könne update " . $mysqli->error . $sql;
+    }
+    $mysqli->close();
+}
+
+function updateCashScore($totalA, $totalB){
+    $dets = getCashDetails($_SESSION['activeGroup']);
+    $diff = abs($totalA - $totalB);
+    $val = $diff * $dets[0] / 100;
+    if ($val < $dets[1]){
+        $val = $dets[1];
+    }
+    $teams = getTeams();
+    $schulden = getCashScores($_SESSION['activeGroup']);
+    if ($totalA > $totalB){
+        setCashScore($teams[1], $val + $schulden[1]);
+    } else if ($totalB > $totalA) {
+        setCashScore($teams[0], $val + $schulden[0]);
+    }
+}
+function setCashScore($team, $val){
+    $mysqli = setup();
+    $sql = "UPDATE Teams SET schulden=$val WHERE id=$team";
+    if ($mysqli->query($sql) === TRUE) {
+    } else {
+        echo "Nid könne update " . $mysqli->error;
+    }
+    $mysqli->close();
+}
+function createNewTournamentGame(){
+    $tafel = '-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1';
+    $startDatum = date("d.m.Y");
+    $ausgeber = rand(0, $_SESSION['noPlayers'] - 1);
+    $mysqli = setup();
+    $sql = "SELECT turniersieg, matsch, kontermatsch, sieg FROM Spiele WHERE id = ?";
+    if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param('s', $_SESSION['activeGame']);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($oldT, $oldM, $oldC, $oldS);
+            $stmt->fetch();
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+    $sql = "INSERT INTO Spiele (startdatum, turniersieg, matsch, kontermatsch, sieg, ausgeber, tafel) VALUES ('$startDatum', $oldT, $oldM, $oldC, $oldS, $ausgeber, '$tafel')";
+    echo $sql . "\n";
+    if ($mysqli->query($sql) === FALSE) {
+        exit( "Fähler bim spiel erstelle! " . $sql . "<br>" . $mysqli->error);
+    }
+    $gameId = mysqli_insert_id($mysqli);
+    addGameToGroup($gameId, $_SESSION['activeGroup']);
+    setActiveGame($_SESSION['activeGroup'], $gameId);
+    getActiveGame($_SESSION['activeGroup']);
+}
+function createNewCashGame(){
+    $tafel = '-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1';
+    $startDatum = date("d.m.Y");
+    $ausgeber = rand(0, $_SESSION['noPlayers'] - 1);
+    $mysqli = setup();
+    $sql = "SELECT geld, minimum FROM Spiele WHERE id = ?";
+    if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param('s', $_SESSION['activeGame']);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($oldG, $oldMi);
+            $stmt->fetch();
+        }
+    }
+    else {
+        exit('Öppis het nid funktioniert, bitte nomol probiere');
+    }
+    $sql = "INSERT INTO Spiele (startdatum, geld, minimum, ausgeber, tafel) VALUES ('$startDatum', $oldG, $oldMi, $ausgeber, '$tafel')";
+    $sql = str_replace(", ,", ", NULL,", $sql);
+    echo $sql . "\n";
+    if ($mysqli->query($sql) === FALSE) {
+        exit( "Fähler bim spiel erstelle! " . $sql . "<br>" . $mysqli->error);
+    }
+    echo "save passed\n";
+    $gameId = mysqli_insert_id($mysqli);
+    addGameToGroup($gameId, $_SESSION['activeGroup']);
+    setActiveGame($_SESSION['activeGroup'], $gameId);
+    getActiveGame($_SESSION['activeGroup']);
 }
 ?>

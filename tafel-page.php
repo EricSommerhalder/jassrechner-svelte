@@ -127,7 +127,9 @@ if ($group == NULL){
             body: `id=${id}`,
         }).then((response) => response.text()).then((res) => loadAusgeber(res));
         deleteClicked();
-        getTotal(); 
+        getTotal();
+        loadInfo();
+        checkFinished(); 
     }
     function focusOut(id) {
         var x = document.getElementById(id);
@@ -146,7 +148,9 @@ if ($group == NULL){
         }).then((response) => response.text()).then((res) => loadAusgeber(res));
         x.disabled = true;
         x.value = getDisziString(parseInt(id.substring(1)), val);
-        getTotal(); 
+        getTotal();
+        loadInfo();
+        checkFinished(); 
     }
 
     function getDisziString(multiplicator, value){
@@ -288,6 +292,7 @@ if ($group == NULL){
     <div class="content">
         <aside class="leftside">
             <button id= "deleteButton" type="submit" onclick="deleteClicked()">Iitrag lösche</button>
+            <div id="finishedButton"></div>
         </aside>
         <main>
             <div class="table">
@@ -362,36 +367,7 @@ if ($group == NULL){
         </main>
         <aside class="rightside">
             <div class="ausgeberBox" id="ausgeber"></div>
-            <div class="infobox_turnier">
-                <table>
-                <tr>
-                    <td colspan="3">Zwischenstand Turnier</td>      
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>Team 1</td>
-                    <td>Team 2</td>
-                </tr>
-                <tr>
-                    <td>Punkte</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="3">Zwischenstand Spiel</td>
-                </tr>
-                <tr>
-                    <td>Matchpunkte</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </table>
-            </div>
-            <div class="infobox_cashgame">
-                <p>Team 1 müend<br>5 Stutz<br>pro Spiiler zahle</p>
-
-                </table>
-            </div>
+            <div id="infobox"></div>
         </aside>
     </div>
     <footer>
@@ -399,11 +375,164 @@ if ($group == NULL){
 
 </body>
 <script>
+    function loadInfo(){
+        isTournament = <?php echo isTournamentById($_SESSION['activeGroup']); ?>;
+        if (isTournament){
+            loadTournamentInfo();
+        } else {
+            loadCashInfo();
+        }
+    }
+    function loadTournamentInfo(){
+        fetch('php/getTournamentScore.php', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+            }).then((response) => response.json())
+                .then((res) => loadTournamentInfoHelper(res[0], res[1], res[2], res[3]));
+    }
+    function loadTournamentInfoHelper(teamAPoints, teamBPoints, matsch, countermatsch){
+        daddy = document.getElementById("infobox");
+        daddy.innerHTML = "";
+        div = document.createElement("div");
+        div.classList.add("infobox_turnier");
+        child = document.createElement("table");
+        first = document.createElement("tr");
+        second = document.createElement("tr");
+        third = document.createElement("tr");
+        fourth = document.createElement("tr");
+        fifth = document.createElement("tr");
+
+        firstfirst = document.createElement("td");
+        firstfirst.colSpan = "3";
+        firstfirst.innerText = "Zwüschestand Turnier";
+        first.appendChild(firstfirst);
+        child.appendChild(first);
+
+        second.appendChild(document.createElement("td"));
+        second.appendChild(tdHelper("<?php echo $_SESSION['teamnames'][0]?>"));
+        second.appendChild(tdHelper("<?php echo $_SESSION['teamnames'][1]?>"));
+        child.appendChild(second);
+        
+        thirdfirst = document.createElement("td")
+        third.appendChild(tdHelper("Punkte"));
+        third.appendChild(tdHelper(teamAPoints.toString()));
+        third.appendChild(tdHelper(teamBPoints.toString()));
+        child.appendChild(third);
+        fourthfirst = document.createElement("td");
+        fourthfirst.colSpan = "3";
+        fourthfirst.innerText = "Zwüschestand Spiel";
+        fourth.appendChild(fourthfirst);
+        child.appendChild(fourth);
+        totalA = 0;
+        totalB = 0;
+        for (let i = 1; i <= 10; i++){
+            val = document.getElementById("A" + i.toString()).value;
+            if (val.indexOf('0 | 0') != -1){
+                totalB += countermatsch
+            }
+            if (val.indexOf('257 | ') != -1){
+                totalA += matsch
+            }
+            val = document.getElementById("B" + i.toString()).value;
+            if (val.indexOf('0 | 0') != -1){
+                totalA += countermatsch
+            }
+            if (val.indexOf('257 | ') != -1){
+                totalB += matsch
+            }
+        }
+
+        fifth.appendChild(tdHelper("Matschpünggt"));
+        fifth.appendChild(tdHelper(totalA.toString()));
+        fifth.appendChild(tdHelper(totalB.toString()));
+        child.appendChild(fifth);
+
+        div.appendChild(child);
+        daddy.appendChild(div);
+
+    }
+    function tdHelper(text){
+        td = document.createElement("td");
+        td.innerText = text;
+        return td;
+    }    
+    function loadCashInfo(){
+        daddy = document.getElementById("infobox");
+        daddy.innerHTML = "";
+        child = document.createElement("div");
+        child.classList.add("infobox_cashgame");
+        grandChild = document.createElement("p");
+
+        let totalA = 0;
+        let totalB = 0;
+        for (let i = 1; i <= 10; i++){
+            val = document.getElementById("A" + i.toString()).value;
+            if (val != ""){
+                totalA += parseInt(val.substring(val.indexOf("|") + 2))
+            }
+            val = document.getElementById("B" + i.toString()).value;
+            if (val != ""){
+                totalB += parseInt(val.substring(val.indexOf("|") + 2))
+            }
+        }
+        if (totalA == totalB){
+            grandChild.innerHTML = "Zur ziit isch usgliche und <br> niemerts muess öppis <br> zahle";
+        } else {
+            if (totalA > totalB){
+                teamString = "<?php echo $_SESSION['teamnames'][1]?>"
+                diff = totalA - totalB;
+            } else {
+                teamString = "<?php echo $_SESSION['teamnames'][0]?>"
+                diff = totalB - totalA;
+            }
+            fetch('php/getCashAmount.php', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+            body: `diff=${diff}`,
+            }).then((response) => response.json())
+                .then((res) => {grandChild.innerHTML = teamString + " müend<br>" + res + " Stutz<br>pro Spiiler zahle";}
+            );   
+        }
+        
+        child.appendChild(grandChild);
+        daddy.appendChild(child);
+    }
     initValueFields();
     getTotal();
     function loadAusgeber(name){
         daddy = document.getElementById("ausgeber");
         daddy.innerHTML = "Uusgäh dörf:<br> " + name;
+    }
+
+    function checkFinished(){
+        daddy = document.getElementById('finishedButton');
+        daddy.innerHTML = "";
+        for (const c of ['A', 'B']) {
+            for (let i = 1; i < 11; i++) {
+                const id = c + i.toString();
+                var input = document.getElementById(id);
+                if (input.value == -1 || input.value == '') {
+                    return;
+                }
+            }
+        }
+        child = document.createElement('button');
+        child.type = "submit";
+        child.innerText = "Spiel beände & speichere";
+        child.setAttribute("onclick", 'saveGame()');
+        daddy.appendChild(child);
+    }
+    function saveGame(){
+        fetch('php/saveGame.php', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+        }).then((response) => window.location.replace("./results-page.php"));
     }
     for (const c of ['A', 'B']) {
         for (let i = 1; i < 11; i++) {
@@ -421,6 +550,8 @@ if ($group == NULL){
         }
     }
     loadAusgeber('<?php echo $_SESSION['players'][$_SESSION['ausgeber']]?>');
+    loadInfo();
+    checkFinished();
 </script>
 
 </html>

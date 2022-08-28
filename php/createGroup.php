@@ -15,10 +15,14 @@
     $name = $_POST['groupname'];
     $noPlayers = (int) $_POST['noPlayers'];
     $istTurnier = 0;
+    $tournamentPoints = 'NULL';
+    $schulden = 'NULL';
     if ($_POST['format'] == 'turnier'){
         $istTurnier = 1;
+        $tournamentPoints = 0;
     } elseif ($_POST['format'] == 'geld'){
         $istTurnier = 0;
+        $schulden = 0;
     } else {
         exit('S Format muess entweder Gäldspiel oder Turnier si!');
     }
@@ -103,12 +107,12 @@
             $spielerA = $defaultPlayerA . '1;' . $defaultPlayerA .'2;' . $defaultPlayerA .'3';
             $spielerB = $defaultPlayerB . '1;' . $defaultPlayerB .'2;' . $defaultPlayerB .'3';
         }
-        $sql = "INSERT INTO Teams (name, spieler) VALUES ('$defaultTeamA', '$spielerA')";
+        $sql = "INSERT INTO Teams (name, spieler, turnierpunkte, schulden) VALUES ('$defaultTeamA', '$spielerA', $tournamentPoints, $schulden)";
         if ($mysqli->query($sql) === FALSE) {
             exit( "Fähler bim Team erstelle! " . $sql . "<br>" . $mysqli->error);
         }
         $teamA = mysqli_insert_id($mysqli);
-        $sql = "INSERT INTO Teams (name, spieler) VALUES ('$defaultTeamB', '$spielerB')";
+        $sql = "INSERT INTO Teams (name, spieler, turnierpunkte, schulden) VALUES ('$defaultTeamB', '$spielerB', $tournamentPoints, $schulden)";
         if ($mysqli->query($sql) === FALSE) {
             exit( "Fähler bim Team erstelle! " . $sql . "<br>" . $mysqli->error);
         }
