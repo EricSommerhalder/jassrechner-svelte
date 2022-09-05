@@ -8,6 +8,8 @@ if (!isset($_SESSION['tafel'])){
 $isTournament = isTournamentById($_SESSION['activeGroup']);
 endActiveGame();
 if ($isTournament){
+    $totalA = 0;
+    $totalB = 0;
     $matchA = 0;
     $matchB = 0;
     $countermatchA = 0;
@@ -25,8 +27,10 @@ if ($isTournament){
         if ($_SESSION['tafel'][$i + 10] == 257){
             $matchB++;
         }
+        $totalA += $_SESSION['tafel'][$i];
+        $totalB += $_SESSION['tafel'][$i + 10];
     }
-    updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB);
+    updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB, $totalA, $totalB);
     createNewTournamentGame();
 } else {
     $totalA = 0;

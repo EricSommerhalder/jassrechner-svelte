@@ -521,7 +521,7 @@ function getTournamentScore($group){
     foreach ($teams as &$team){
         array_push($arr, getTournamentPoints($team));
     }
-    $keys = ['matsch', 'kontermatsch'];
+    $keys = ['matsch', 'kontermatsch', 'sieg'];
     foreach ($keys as &$key){
         array_push($arr, getSettingsVal($game, $key));
     }
@@ -540,7 +540,7 @@ function endActiveGame(){
     $mysqli->close();
 }
 
-function updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB){
+function updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB, $totalA, $totalB){
     $dets = getTournamentScore($_SESSION['activeGroup']);
     $toAddA = $matchA * $dets[2] + $countermatchA * $dets[3];
     $toAddB = $matchB * $dets[2] + $countermatchB * $dets[3];
@@ -549,6 +549,11 @@ function updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB)
     $oldValB = $dets[1];
     $toAddA+= $oldValA;
     $toAddB+= $oldValB;
+    if ($totalA > $totalB){
+        $toAddA+= $dets[4];
+    } else if ($totalB > $totalA){
+        $toAddB+= $dets[4];
+    }
     setTournamentScore($teams[0], $toAddA);
     setTournamentScore($teams[1], $toAddB);
 }

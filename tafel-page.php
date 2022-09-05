@@ -136,7 +136,19 @@ if ($group == NULL){
         document.getElementById(id.charAt(0) + '0').style.backgroundColor = "";
         document.getElementById('Diszi' + id.substring(1)).style.backgroundColor = "";
         let val = x.value.trim();
-        if (val == '') {
+        if (val == ''){
+            return;
+        }
+        if (isNaN(val)) {
+            if (val.indexOf(' | ') != -1){
+                return;
+            }
+            x.value = '';
+            return;
+        }
+        val = parseInt(val);
+        if (val < 0 || (val > 157 && val != 257) || val == 156){
+            x.value = '';
             return;
         }
         fetch('php/setTafelValue.php', {
@@ -494,7 +506,7 @@ if ($group == NULL){
             },
             body: `diff=${diff}`,
             }).then((response) => response.json())
-                .then((res) => {grandChild.innerHTML = teamString + " müend<br>" + res + " Stutz<br>pro Spiiler zahle";}
+                .then((res) => {grandChild.innerHTML = teamString + " müend<br>" + res.toFixed(2) + " Stutz<br>pro Spiiler zahle";}
             );   
         }
         

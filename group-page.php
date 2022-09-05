@@ -141,18 +141,18 @@ if (!isset ($_SESSION['noPlayers'])) {
     }
     function loadMid(noOfPlayers, isActive){
         loadTable(noOfPlayers, isActive);
-        loadTeamNames(isActive);
+        loadTeamNames(noOfPlayers, isActive);
     }
-    function loadTeamNames(isActive){
+    function loadTeamNames(noOfPlayers, isActive){
         fetch('php/getTeamNames.php', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
             },
         }).then((response) => response.text())
-            .then((res) => (buildTeamNames(JSON.parse(res), isActive)));
+            .then((res) => (buildTeamNames(noOfPlayers, JSON.parse(res), isActive)));
     }
-    function buildTeamNames(teamNames, isActive){
+    function buildTeamNames(noOfPlayers, teamNames, isActive){
         daddy = document.getElementById("teamnames");
         daddy.innerHTML = '';
         daddy.appendChild(inputHelper("teamName", teamNames[0], isActive));
@@ -165,14 +165,14 @@ if (!isset ($_SESSION['noPlayers'])) {
             b.type = "submit";
             b.innerHTML = "Neui Teamname bestätige";
             b.addEventListener("click", function(){
-                changeTeamNames(teamNames);
-                buildTeamNames(teamNames, false);
+                changeTeamNames(noOfPlayers, teamNames);
+                buildTeamNames(noOfPlayers, teamNames, false);
                 });
             b2 = document.createElement("button");
             b2.type = "reset";
             b2.innerHTML = "Abbräche";
             b2.addEventListener("click", function(){
-                buildTeamNames(teamNames, false);
+                buildTeamNames(noOfPlayers, teamNames, false);
                 });
             daddy.appendChild(b2);
         }
@@ -180,7 +180,7 @@ if (!isset ($_SESSION['noPlayers'])) {
             b.type = "reset";
             b.innerHTML = "Teamname ändere";
             b.addEventListener("click", function(){
-                buildTeamNames(teamNames, true);
+                buildTeamNames(noOfPlayers, teamNames, true);
                 });
         }
         daddy.appendChild(b);
@@ -282,7 +282,7 @@ if (!isset ($_SESSION['noPlayers'])) {
             body: `teamA=${a}&teamB=${b}`,
         })         
     }
-    function changeTeamNames(names){
+    function changeTeamNames(noOfPlayers, names){
         inputs = document.getElementsByClassName('teamName');
         if (inputs[0].value != ""){
                 names[0] = inputs[0].value;
@@ -296,7 +296,8 @@ if (!isset ($_SESSION['noPlayers'])) {
                 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
             },
             body: `teamA=${names[0]}&teamB=${names[1]}`,
-        });
+        }).then((response) => response.text())
+            .then((res) => buildTable(noOfPlayers, JSON.parse(res), false));
     }
     function loadSettings(groupName, isActive){
         fetch('php/isTournament.php', {
