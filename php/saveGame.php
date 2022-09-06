@@ -27,10 +27,15 @@ if ($isTournament){
         if ($_SESSION['tafel'][$i + 10] == 257){
             $matchB++;
         }
-        $totalA += $_SESSION['tafel'][$i];
-        $totalB += $_SESSION['tafel'][$i + 10];
+        if ($_SESSION['tafel'][$i] != -1){
+            $totalA += $_SESSION['tafel'][$i] * ($i + 1);
+        }
+        if ($_SESSION['tafel'][$i + 10] != -1){
+            $totalB += $_SESSION['tafel'][$i + 10] * ($i + 1);
+        }
     }
-    updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB, $totalA, $totalB);
+    $res = updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB, $totalA, $totalB);
+    echo $res;
     createNewTournamentGame();
 } else {
     $totalA = 0;
@@ -41,5 +46,6 @@ if ($isTournament){
     }
     updateCashScore($totalA, $totalB);
     createNewCashGame();
+    echo 0;
 }
 ?>

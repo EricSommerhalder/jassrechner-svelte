@@ -521,7 +521,7 @@ function getTournamentScore($group){
     foreach ($teams as &$team){
         array_push($arr, getTournamentPoints($team));
     }
-    $keys = ['matsch', 'kontermatsch', 'sieg'];
+    $keys = ['matsch', 'kontermatsch', 'sieg', 'turniersieg'];
     foreach ($keys as &$key){
         array_push($arr, getSettingsVal($game, $key));
     }
@@ -554,8 +554,24 @@ function updateTournamentScore($matchA, $matchB, $countermatchA, $countermatchB,
     } else if ($totalB > $totalA){
         $toAddB+= $dets[4];
     }
+    if ($toAddA >= $dets[5] && $toAddA > $toAddB){
+        setTournamentScore($teams[0], 0);
+        setTournamentScore($teams[1], 0);
+        return 1;
+    }
+    if ($toAddB >= $dets[5] && $toAddB > $toAddA){
+        setTournamentScore($teams[0], 0);
+        setTournamentScore($teams[1], 0);
+        return 2;
+    }
+    if ($toAddA >= $dets[5] && $toAddB >= $dets[5] && $toAddA == $toAddB){
+        setTournamentScore($teams[0], 0);
+        setTournamentScore($teams[1], 0);
+        return 3;
+    }
     setTournamentScore($teams[0], $toAddA);
     setTournamentScore($teams[1], $toAddB);
+    return 0;
 }
 
 function setTournamentScore($team, $score){
@@ -611,7 +627,6 @@ function createNewTournamentGame(){
         exit('Öppis het nid funktioniert, bitte nomol probiere');
     }
     $sql = "INSERT INTO Spiele (startdatum, turniersieg, matsch, kontermatsch, sieg, ausgeber, tafel) VALUES ('$startDatum', $oldT, $oldM, $oldC, $oldS, $ausgeber, '$tafel')";
-    echo $sql . "\n";
     if ($mysqli->query($sql) === FALSE) {
         exit( "Fähler bim spiel erstelle! " . $sql . "<br>" . $mysqli->error);
     }

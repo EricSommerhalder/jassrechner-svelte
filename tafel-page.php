@@ -268,6 +268,10 @@ if ($group == NULL){
             document.getElementById('vorsprungB').value = totalB - totalA;
             document.getElementById('vorsprungA').value = "";
         }
+        if (totalA == totalB){
+            document.getElementById('vorsprungA').value = "";
+            document.getElementById('vorsprungB').value = "";
+        }
     }
     function highlight(id) {
         document.getElementById(id.charAt(0) + '0').style.backgroundColor = "#4b6c64";
@@ -305,6 +309,7 @@ if ($group == NULL){
         <aside class="leftside">
             <button id= "deleteButton" type="submit" onclick="deleteClicked()">Iitrag lösche</button>
             <div id="finishedButton"></div>
+            <div id="tourFinishedButton"></div>
         </aside>
         <main>
             <div class="table">
@@ -402,9 +407,9 @@ if ($group == NULL){
                 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
             },
             }).then((response) => response.json())
-                .then((res) => loadTournamentInfoHelper(res[0], res[1], res[2], res[3]));
+                .then((res) => loadTournamentInfoHelper(res[0], res[1], res[2], res[3], res[5]));
     }
-    function loadTournamentInfoHelper(teamAPoints, teamBPoints, matsch, countermatsch){
+    function loadTournamentInfoHelper(teamAPoints, teamBPoints, matsch, countermatsch, turniersieg){
         daddy = document.getElementById("infobox");
         daddy.innerHTML = "";
         div = document.createElement("div");
@@ -457,12 +462,19 @@ if ($group == NULL){
         }
 
         fifth.appendChild(tdHelper("Matschpünggt"));
-        fifth.appendChild(tdHelper(totalA.toString()));
-        fifth.appendChild(tdHelper(totalB.toString()));
+        tdA = document.createElement("td");
+        tdA.id = "matschA";
+        tdA.innerText = totalA.toString();
+        fifth.appendChild(tdA);
+        tdB = document.createElement("td");
+        tdB.id = "matschB";
+        tdB.innerText = totalB.toString(); 
+        fifth.appendChild(tdB);
         child.appendChild(fifth);
 
         div.appendChild(child);
         daddy.appendChild(div);
+        checkTournamentFinished(teamAPoints + totalA, teamBPoints + totalB, turniersieg);
 
     }
     function tdHelper(text){
@@ -538,13 +550,39 @@ if ($group == NULL){
         child.setAttribute("onclick", 'saveGame()');
         daddy.appendChild(child);
     }
+
+    function checkTournamentFinished(teamA, teamB, turniersieg){
+        daddy = document.getElementById('tourFinishedButton');
+        daddy.innerHTML = "";
+        if (teamA >= turniersieg || teamB >= turniersieg){
+            child = document.createElement('button');
+            child.type = "submit";
+            child.innerText = "Fürs Turnier bedangge";
+            child.setAttribute("onclick", 'saveGame()');
+            daddy.appendChild(child);
+        }
+    }
     function saveGame(){
         fetch('php/saveGame.php', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
             },
-        }).then((response) => window.location.replace("./results-page.php"));
+        }).then((response) => response.text()).then((res) => afterGame(res));
+    }
+
+    function afterGame(finished){
+        console.log(finished);
+        if (finished == 1){
+            alert("<?php echo $_SESSION['teamnames'][0]?> het s Turnier gwunne! Gratuliere!");
+        }
+        if (finished == 2){
+            alert("<?php echo $_SESSION['teamnames'][1]?> het s Turnier gwunne! Gratuliere!");
+        }
+        if (finished == 3){
+            alert("S Turnier het mitme unentschiide gändet. Gratuliere!");
+        }
+        window.location.replace("./results-page.php");
     }
     for (const c of ['A', 'B']) {
         for (let i = 1; i < 11; i++) {
