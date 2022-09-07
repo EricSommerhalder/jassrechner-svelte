@@ -29,7 +29,7 @@ if (!isset($_SESSION['activeGroup'])) {
         <ul>
             <li><a href="tafel-page.php">Tafel</a></li>
             <li>|</li>
-            <li><a href="results-page.php">Resultate</a></li>
+            <li class="aktiv"><a href="results-page.php">Resultate</a></li>
             <li>|</li>
             <li><a href="group-page.php">Gruppe</a></li>
             <li>|</li>
@@ -40,6 +40,30 @@ if (!isset($_SESSION['activeGroup'])) {
         <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
         <p class="crumb">Aktivi Gruppe: <?php echo getGroupName($_SESSION['activeGroup'])?></p>
     </nav>
+    <div class="results">
+        <h2>Turnier</h2>
+        <table>
+            <tr>
+                <td></td>
+                <td>Teamname A</td>
+                <td>Pünggt</td>
+                <td>Teamname B</td>
+                <td>Pünggt</td>
+                <td>Agfange am</td>
+                <td>Beändet am</td>
+            </tr>
+            <tr>
+                <td>Turnier 1</td>
+                <td>Männer</td>
+                <td>5</td>
+                <td>Fraue</td>
+                <td>2</td>
+                <td>1.1.2022</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
 </body>
 
 </html>

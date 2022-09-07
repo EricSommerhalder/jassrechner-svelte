@@ -250,3 +250,10 @@ td:last-child {
     border: 0;
 }
 
+.results {
+    margin: 10px auto;
+    background-color: #80b1c2;
+    display: table;
+    border-radius: 20px;
+  }
+
