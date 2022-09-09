@@ -51,6 +51,7 @@ if (!isset($_SESSION['activeGroup'])) {
                 <td>Pünggt</td>
                 <td>Agfange am</td>
                 <td>Beändet am</td>
+                <td>Notize</td>
             </tr>
             <tr>
                 <td>Turnier 1</td>
@@ -60,6 +61,26 @@ if (!isset($_SESSION['activeGroup'])) {
                 <td>2</td>
                 <td>1.1.2022</td>
                 <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <h2>Cash</h2>
+        <table>
+            <tr>
+                <td></td>
+                <td>Teamname A</td>
+                <td>Teamname B</td>
+                <td>gspiielt am</td>
+                <td>Verliererteam</td>
+                <td>zum zahle</td>
+            </tr>
+            <tr>
+                <td>Spiel 1</td>
+                <td>E & A</td>
+                <td>H & C</td>
+                <td>7.9.22</td>
+                <td>E & A</td>
+                <td>22.-</td>
             </tr>
         </table>
     </div>

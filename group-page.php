@@ -48,17 +48,14 @@ if (!isset ($_SESSION['noPlayers'])) {
         <p class="crumb"><?=$_SESSION['name']?>, Du bisch igloggt</p>
         <p class="crumb" id="activeGroupText">Aktivi Gruppe: <?php echo getGroupName($_SESSION['activeGroup'])?></p>
     </nav>
+    <h2>Di aktive Gruppe:</h2>
     <div class="content">
-        <aside class="leftside">
-
-            <aside id="res">       
-            </aside>
+        <aside id="res" class="leftside">
             <a href="new-group-page.php">
                 <button type="submit">Neui Gruppe erstelle</button>
             </a>
         </aside>
         <main>
-            <h2>Di aktive Gruppe:</h2>
             <h3>Teamnamen:</h3>
             <div id="teamnames" class="teamname">
             </div>
